@@ -63,6 +63,15 @@ All content lives in flat JSON files — no API, no database:
 - Spring interactions: `whileHover`, `whileTap` with `type: "spring"`
 - Accordions: `AnimatePresence` + `height: 0 → "auto"` on experience roles
 
+### ThemeToggle details (`components/ui/ThemeToggle.tsx`)
+- **No FontAwesome** — fully custom inline SVG icons (sun + moon)
+- Sun: rotating SVG (16s linear loop) with 8 rays, `#f2199c` pink
+- Moon: crescent path + 2 star dots, `#01f8c1` teal
+- `AnimatePresence mode="wait"` — icon exits before new one enters (no overlap flash)
+- Ambient scan line sweeps the track every ~4s
+- `whileHover` → glow box-shadow intensifies; `whileTap` → button scales down
+- `data-no-transition` on button and thumb to prevent global CSS transition fighting spring
+
 ## Key files
 
 | File | Purpose |
@@ -70,6 +79,8 @@ All content lives in flat JSON files — no API, no database:
 | `app/globals.css` | CSS variables for both themes + skeleton shimmer keyframes |
 | `context/LanguageContext.tsx` | EN/ES state, `useLanguage()`, `t()` |
 | `components/ui/AsciiBackground.tsx` | Canvas matrix rain, theme-aware colors |
+| `components/ui/ThemeToggle.tsx` | Animated dark/light toggle — custom SVG sun/moon, scan line, AnimatePresence |
+| `components/ui/LanguageToggle.tsx` | EN/ES pill toggle with sliding accent indicator |
 | `components/sections/Experience.tsx` | Timeline accordion, `formatDate()` helper |
 | `components/sections/Projects.tsx` | Featured + grid layout, blur-hover effect |
 
