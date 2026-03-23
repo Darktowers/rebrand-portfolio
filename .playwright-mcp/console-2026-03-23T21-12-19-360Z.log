@@ -1,0 +1,234 @@
+[     308ms] [WARNING] Image with src "/my-work/images/zoefin.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  147409ms] [ERROR] ./components/sections/Contact.tsx:3:1
+Export faEnvelope doesn't exist in target module
+  1 | "use client";
+  2 |
+> 3 | import {
+    | ^^^^^^^
+> 4 | 	faEnvelope,
+    | ^^^^^^^^^^^
+> 5 | 	faWhatsapp as faWhatsappSolid,
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 6 | } from "@fortawesome/free-brands-svg-icons";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import {
+  8 | 	faGithub,
+  9 | 	faLinkedin,
+
+The export faEnvelope was not found in module [project]/node_modules/@fortawesome/free-brands-svg-icons/index.mjs [app-client] (ecmascript).
+Did you mean to import faEvernote?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/sections/Contact.tsx
+    ./app/contact/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:3272
+[  147410ms] [ERROR] ./components/sections/Contact.tsx:3:1
+Export faEnvelope doesn't exist in target module
+  1 | "use client";
+  2 |
+> 3 | import {
+    | ^^^^^^^
+> 4 | 	faEnvelope,
+    | ^^^^^^^^^^^
+> 5 | 	faWhatsapp as faWhatsappSolid,
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 6 | } from "@fortawesome/free-brands-svg-icons";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import {
+  8 | 	faGithub,
+  9 | 	faLinkedin,
+
+The export faEnvelope was not found in module [project]/node_modules/@fortawesome/free-brands-svg-icons/index.mjs [app-ssr] (ecmascript).
+Did you mean to import faEvernote?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/sections/Contact.tsx
+    ./app/contact/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:3272
+[  147410ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/projects?_rsc=1x4z9:0
+[  147520ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/projects:0
+[  147717ms] Error: ./components/sections/Contact.tsx:3:1
+Export faEnvelope doesn't exist in target module
+  1 | "use client";
+  2 |
+> 3 | import {
+    | ^^^^^^^
+> 4 | 	faEnvelope,
+    | ^^^^^^^^^^^
+> 5 | 	faWhatsapp as faWhatsappSolid,
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 6 | } from "@fortawesome/free-brands-svg-icons";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import {
+  8 | 	faGithub,
+  9 | 	faLinkedin,
+
+The export faEnvelope was not found in module [project]/node_modules/@fortawesome/free-brands-svg-icons/index.mjs [app-client] (ecmascript).
+Did you mean to import faEvernote?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/sections/Contact.tsx
+    ./app/contact/page.tsx
+
+
+    at <unknown> (Error: ./components/sections/Contact.tsx:3:1)
+    at Object.getCompilationErrors (file:///home/darktower/repos/portfolio/node_modules/next/dist/server/dev/hot-reloader-turbopack.js:1189:59)
+    at DevBundlerService.getCompilationError (file:///home/darktower/repos/portfolio/node_modules/next/dist/server/lib/dev-bundler-service.js:44:55)
+    at DevServer.getCompilationError (file:///home/darktower/repos/portfolio/node_modules/next/dist/server/dev/next-dev-server.js:719:42)
+    at DevServer.findPageComponents (file:///home/darktower/repos/portfolio/node_modules/next/dist/server/dev/next-dev-server.js:689:43)
+    at async DevServer.renderErrorToResponseImpl (file:///home/darktower/repos/portfolio/node_modules/next/dist/server/base-server.js:1745:26)
+[  147720ms] [ERROR] ./components/sections/Contact.tsx:3:1
+Export faEnvelope doesn't exist in target module
+  1 | "use client";
+  2 |
+> 3 | import {
+    | ^^^^^^^
+> 4 | 	faEnvelope,
+    | ^^^^^^^^^^^
+> 5 | 	faWhatsapp as faWhatsappSolid,
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 6 | } from "@fortawesome/free-brands-svg-icons";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import {
+  8 | 	faGithub,
+  9 | 	faLinkedin,
+
+The export faEnvelope was not found in module [project]/node_modules/@fortawesome/free-brands-svg-icons/index.mjs [app-client] (ecmascript).
+Did you mean to import faEvernote?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/sections/Contact.tsx
+    ./app/contact/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[  147721ms] [ERROR] ./components/sections/Contact.tsx:3:1
+Export faEnvelope doesn't exist in target module
+  1 | "use client";
+  2 |
+> 3 | import {
+    | ^^^^^^^
+> 4 | 	faEnvelope,
+    | ^^^^^^^^^^^
+> 5 | 	faWhatsapp as faWhatsappSolid,
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 6 | } from "@fortawesome/free-brands-svg-icons";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import {
+  8 | 	faGithub,
+  9 | 	faLinkedin,
+
+The export faEnvelope was not found in module [project]/node_modules/@fortawesome/free-brands-svg-icons/index.mjs [app-ssr] (ecmascript).
+Did you mean to import faEvernote?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/sections/Contact.tsx
+    ./app/contact/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[  147822ms] [ERROR] ./components/sections/Contact.tsx:3:1
+Export faEnvelope doesn't exist in target module
+  1 | "use client";
+  2 |
+> 3 | import {
+    | ^^^^^^^
+> 4 | 	faEnvelope,
+    | ^^^^^^^^^^^
+> 5 | 	faWhatsapp as faWhatsappSolid,
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 6 | } from "@fortawesome/free-brands-svg-icons";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import {
+  8 | 	faGithub,
+  9 | 	faLinkedin,
+
+The export faEnvelope was not found in module [project]/node_modules/@fortawesome/free-brands-svg-icons/index.mjs [app-client] (ecmascript).
+Did you mean to import faEvernote?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/sections/Contact.tsx
+    ./app/contact/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[  147822ms] [ERROR] ./components/sections/Contact.tsx:3:1
+Export faEnvelope doesn't exist in target module
+  1 | "use client";
+  2 |
+> 3 | import {
+    | ^^^^^^^
+> 4 | 	faEnvelope,
+    | ^^^^^^^^^^^
+> 5 | 	faWhatsapp as faWhatsappSolid,
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 6 | } from "@fortawesome/free-brands-svg-icons";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import {
+  8 | 	faGithub,
+  9 | 	faLinkedin,
+
+The export faEnvelope was not found in module [project]/node_modules/@fortawesome/free-brands-svg-icons/index.mjs [app-ssr] (ecmascript).
+Did you mean to import faEvernote?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/sections/Contact.tsx
+    ./app/contact/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[  147828ms] [ERROR] ./components/sections/Contact.tsx:3:1
+Export faEnvelope doesn't exist in target module
+  1 | "use client";
+  2 |
+> 3 | import {
+    | ^^^^^^^
+> 4 | 	faEnvelope,
+    | ^^^^^^^^^^^
+> 5 | 	faWhatsapp as faWhatsappSolid,
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 6 | } from "@fortawesome/free-brands-svg-icons";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import {
+  8 | 	faGithub,
+  9 | 	faLinkedin,
+
+The export faEnvelope was not found in module [project]/node_modules/@fortawesome/free-brands-svg-icons/index.mjs [app-client] (ecmascript).
+Did you mean to import faEvernote?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/sections/Contact.tsx
+    ./app/contact/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[  147828ms] [ERROR] ./components/sections/Contact.tsx:3:1
+Export faEnvelope doesn't exist in target module
+  1 | "use client";
+  2 |
+> 3 | import {
+    | ^^^^^^^
+> 4 | 	faEnvelope,
+    | ^^^^^^^^^^^
+> 5 | 	faWhatsapp as faWhatsappSolid,
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 6 | } from "@fortawesome/free-brands-svg-icons";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 | import {
+  8 | 	faGithub,
+  9 | 	faLinkedin,
+
+The export faEnvelope was not found in module [project]/node_modules/@fortawesome/free-brands-svg-icons/index.mjs [app-ssr] (ecmascript).
+Did you mean to import faEvernote?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import trace:
+  Server Component:
+    ./components/sections/Contact.tsx
+    ./app/contact/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_0u_w_5s._.js:1945
+[  152486ms] [WARNING] Image with src "/my-work/images/fauni.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  152486ms] [WARNING] Image with src "/my-work/images/zoefin.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431
+[  162212ms] [WARNING] Image with src "/my-work/images/zoefin.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2431

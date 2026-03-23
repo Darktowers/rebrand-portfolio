@@ -1,0 +1,140 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Hi, I'm",
+    "role": "React Developer & JavaScript Engineer",
+    "bio": "Building fast, scalable web apps with 8+ years of experience.",
+    "cta_work": "View My Work",
+    "cta_contact": "Get In Touch",
+    "cta_cv": "Download CV"
+  },
+  "about": {
+    "title": "About Me",
+    "bio": "Software engineer with 8+ years of experience building web applications. I'm a team player who organizes tasks in an agile way, applies best practices and is constantly learning new technologies in the web development world.",
+    "skills_title": "Tech Stack",
+    "languages_title": "Languages",
+    "certifications_title": "Certifications",
+    "education_title": "Education",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "cloud": "Cloud & DevOps",
+    "tools": "Tools"
+  },
+  "experience": {
+    "title": "Experience",
+    "current": "Current",
+    "present": "Present",
+    "view_less": "View less",
+    "view_more": "View more"
+  },
+  "projects": {
+    "title": "Projects",
+    "featured": "Featured",
+    "view": "View Project",
+    "zoefin": {
+      "name": "Z0E Financial",
+      "description": "Platform to find the best financial advisors to grow your wealth."
+    },
+    "fauni": {
+      "name": "Fauni",
+      "description": "React Native app to explore the diversity of animals inside an ecological park."
+    },
+    "cocacola": {
+      "name": "Coca-Cola en tu hogar",
+      "description": "Innovation platform to deliver Coke products in a new way."
+    },
+    "practilonch": {
+      "name": "PractiLonch",
+      "description": "Innovation to deliver healthy kids meals with Coke product add-ons."
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "Whether you have an opportunity, a project idea, or just want to say hi — my inbox is open.",
+    "email": "Email",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "whatsapp": "WhatsApp"
+  },
+  "footer": {
+    "built": "Built with Next.js & Motion",
+    "rights": "All rights reserved"
+  },
+  "exp": {
+    "zoe": {
+      "senior": {
+        "title": "Senior Frontend Developer | Platform Engineer",
+        "1": "Maintained full ownership and control over AWS infrastructure",
+        "2": "Built Infrastructure as Code repository with SST for new resource provisioning",
+        "3": "Planned and executed core platform features",
+        "4": "Enhanced platform reliability and stability across all services",
+        "5": "Implemented custom MFA authentication for React Native application",
+        "6": "Mentored frontend developers to accelerate their growth and team integration",
+        "7": "Built custom Backend for Frontend (BFF) services using Next.js and Node.js"
+      },
+      "frontend": {
+        "title": "Frontend Developer",
+        "1": "Developed robust features for the product from the ground up",
+        "2": "Enhanced developer experience through React version upgrades, monorepo migration with Turborepo, and infrastructure modernization from EC2 to Vercel",
+        "3": "Implemented new technologies and tools to improve speed and performance of Next.js applications",
+        "4": "Implemented robust CI/CD pipelines",
+        "5": "Managed and maintained dependency updates across the codebase"
+      }
+    },
+    "mjv": {
+      "lead": {
+        "title": "Backend Developer / Tech Lead",
+        "1": "Dev team management and objectives prioritization",
+        "2": "Definition of development architectures and configuration of boilerplates for dev team",
+        "3": "DevOps configuration with Bamboo",
+        "4": "Development of APIs with NodeJS, GraphQL and DynamoDB",
+        "5": "Development of Serverless Applications in AWS",
+        "6": "Development of web applications with AngularJS and ReactJS (SSR)"
+      },
+      "backend": {
+        "title": "Backend Developer",
+        "1": "Development of APIs with NodeJS, GraphQL and DynamoDB",
+        "2": "Development of Serverless Applications in AWS",
+        "3": "Development of web applications with AngularJS"
+      }
+    },
+    "uberflug": {
+      "title": "Backend Developer",
+      "1": "Development of REST API with Node.js",
+      "2": "Development of REST API with Laravel",
+      "3": "Management of infrastructure with AWS (Elastic Beanstalk)",
+      "4": "Database management with PostgreSQL"
+    },
+    "lookapp": {
+      "title": "Full Stack Developer",
+      "1": "Development of hybrid applications with PhoneGap and Cordova",
+      "2": "Development of REST API with Node.js",
+      "3": "Development of web apps",
+      "4": "Management of infrastructure with AWS",
+      "5": "Database management with MySQL"
+    },
+    "ciento": {
+      "title": "Web Developer",
+      "1": "Development of mini games with PhaserJS",
+      "2": "Development of REST API with Laravel",
+      "3": "Development of web apps with Laravel and JavaScript",
+      "4": "Database management with MySQL"
+    },
+    "bluecell": {
+      "title": "Frontend Developer",
+      "1": "Development of web apps — HTML5 structure, styling and JavaScript user interaction"
+    },
+    "highnutricion": {
+      "title": "IT Auxiliar Support",
+      "1": "Development of basic web pages",
+      "2": "IT Support",
+      "3": "Support and creation of SharePoint apps"
+    }
+  }
+}

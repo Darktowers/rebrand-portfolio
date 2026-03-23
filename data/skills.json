@@ -1,0 +1,14 @@
+{
+  "frontend": [
+    "React", "Next.js", "TypeScript", "JavaScript", "React Native", "Angular", "HTML5", "CSS3", "Tailwind CSS", "SCSS"
+  ],
+  "backend": [
+    "Node.js", "GraphQL", "REST APIs", "Laravel", "Serverless"
+  ],
+  "cloud": [
+    "AWS Lambda", "AWS", "Vercel", "Netlify", "Elastic Beanstalk", "DynamoDB", "PostgreSQL", "MySQL"
+  ],
+  "tools": [
+    "Turborepo", "SST", "CI/CD", "SCRUM", "Git", "Expo", "Bamboo"
+  ]
+}

@@ -1,0 +1,166 @@
+[
+  {
+    "id": "zoe",
+    "company": "Zoe Financial",
+    "companyUrl": "https://my.zoefin.com/",
+    "location": "Remote — Bogotá, Colombia",
+    "current": true,
+    "roles": [
+      {
+        "id": "zoe-senior",
+        "start": "2024-10",
+        "end": null,
+        "bulletKeys": [
+          "exp.zoe.senior.1",
+          "exp.zoe.senior.2",
+          "exp.zoe.senior.3",
+          "exp.zoe.senior.4",
+          "exp.zoe.senior.5",
+          "exp.zoe.senior.6",
+          "exp.zoe.senior.7"
+        ]
+      },
+      {
+        "id": "zoe-frontend",
+        "start": "2021-02",
+        "end": "2024-10",
+        "bulletKeys": [
+          "exp.zoe.frontend.1",
+          "exp.zoe.frontend.2",
+          "exp.zoe.frontend.3",
+          "exp.zoe.frontend.4",
+          "exp.zoe.frontend.5"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mjv",
+    "company": "MJV Technology & Innovation",
+    "companyUrl": null,
+    "location": "Bogotá, Colombia",
+    "current": false,
+    "roles": [
+      {
+        "id": "mjv-lead",
+        "start": "2019-11",
+        "end": "2021-02",
+        "bulletKeys": [
+          "exp.mjv.lead.1",
+          "exp.mjv.lead.2",
+          "exp.mjv.lead.3",
+          "exp.mjv.lead.4",
+          "exp.mjv.lead.5",
+          "exp.mjv.lead.6"
+        ]
+      },
+      {
+        "id": "mjv-backend",
+        "start": "2019-04",
+        "end": "2019-10",
+        "bulletKeys": [
+          "exp.mjv.backend.1",
+          "exp.mjv.backend.2",
+          "exp.mjv.backend.3"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "uberflug",
+    "company": "UBERFLUG Tech Marketing",
+    "companyUrl": null,
+    "location": "Bogotá, Colombia",
+    "current": false,
+    "roles": [
+      {
+        "id": "uberflug-backend",
+        "start": "2018-09",
+        "end": "2019-04",
+        "bulletKeys": [
+          "exp.uberflug.1",
+          "exp.uberflug.2",
+          "exp.uberflug.3",
+          "exp.uberflug.4"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lookapp",
+    "company": "lookapp_co",
+    "companyUrl": null,
+    "location": "Bogotá, Colombia",
+    "current": false,
+    "roles": [
+      {
+        "id": "lookapp-fullstack",
+        "start": "2018-03",
+        "end": "2018-09",
+        "bulletKeys": [
+          "exp.lookapp.1",
+          "exp.lookapp.2",
+          "exp.lookapp.3",
+          "exp.lookapp.4",
+          "exp.lookapp.5"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ciento",
+    "company": "150 POR CIENTO",
+    "companyUrl": null,
+    "location": "Bogotá, Colombia",
+    "current": false,
+    "roles": [
+      {
+        "id": "ciento-web",
+        "start": "2017-03",
+        "end": "2018-03",
+        "bulletKeys": [
+          "exp.ciento.1",
+          "exp.ciento.2",
+          "exp.ciento.3",
+          "exp.ciento.4"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bluecell",
+    "company": "Bluecell Comunicación",
+    "companyUrl": null,
+    "location": "Bogotá, Colombia",
+    "current": false,
+    "roles": [
+      {
+        "id": "bluecell-frontend",
+        "start": "2016-11",
+        "end": "2017-03",
+        "bulletKeys": [
+          "exp.bluecell.1"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "highnutricion",
+    "company": "HIGH NUTRICION COMPANY",
+    "companyUrl": null,
+    "location": "Bogotá, Colombia",
+    "current": false,
+    "roles": [
+      {
+        "id": "highnutricion-it",
+        "start": "2014-09",
+        "end": "2016-08",
+        "bulletKeys": [
+          "exp.highnutricion.1",
+          "exp.highnutricion.2",
+          "exp.highnutricion.3"
+        ]
+      }
+    ]
+  }
+]

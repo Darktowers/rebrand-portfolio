@@ -1,0 +1,38 @@
+[
+  {
+    "id": "zoefin",
+    "nameKey": "projects.zoefin.name",
+    "descriptionKey": "projects.zoefin.description",
+    "stack": ["Next.js", "TypeScript", "Turborepo", "Node.js", "AWS Lambda", "Vercel"],
+    "image": "/my-work/images/zoefin.png",
+    "url": "https://my.zoefin.com/",
+    "featured": true
+  },
+  {
+    "id": "fauni",
+    "nameKey": "projects.fauni.name",
+    "descriptionKey": "projects.fauni.description",
+    "stack": ["React Native", "Expo", "TypeScript", "Laravel"],
+    "image": "/my-work/images/fauni.png",
+    "url": null,
+    "featured": false
+  },
+  {
+    "id": "cocacola",
+    "nameKey": "projects.cocacola.name",
+    "descriptionKey": "projects.cocacola.description",
+    "stack": ["Angular", "TypeScript", "GraphQL", "Node.js", "AWS Lambda"],
+    "image": "/my-work/images/cocacola.png",
+    "url": "https://www.entuhogar.coca-cola.com.co/",
+    "featured": false
+  },
+  {
+    "id": "practilonch",
+    "nameKey": "projects.practilonch.name",
+    "descriptionKey": "projects.practilonch.description",
+    "stack": ["Angular", "TypeScript", "GraphQL", "Node.js", "AWS Lambda"],
+    "image": "/my-work/images/practilonch.png",
+    "url": "https://www.practilonch.com",
+    "featured": false
+  }
+]

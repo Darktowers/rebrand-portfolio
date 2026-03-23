@@ -1,0 +1,33 @@
+{
+  "name": "Cristian Andres Arrieta Gutierrez",
+  "displayName": "Cristian Arrieta",
+  "title": "React Developer",
+  "subtitle": "JavaScript Engineer",
+  "location": "Bogotá, Colombia",
+  "email": "darktowerdev@gmail.com",
+  "whatsapp": "+57XXXXXXXXXX",
+  "linkedin": "https://www.linkedin.com/in/cristian-andres-arrieta-gutierrez-74a496b5",
+  "github": "https://github.com/Darktowers",
+  "site": "https://darktowerdev.netlify.app",
+  "yearsOfExperience": 8,
+  "languages": ["Spanish", "English"],
+  "certifications": [
+    {
+      "name": "EF SET English Certificate",
+      "score": "60/100",
+      "level": "B2 Upper Intermediate"
+    }
+  ],
+  "education": [
+    {
+      "institution": "UNINPAHU",
+      "degree": "Software Engineering",
+      "period": "2015–2017"
+    },
+    {
+      "institution": "SENA",
+      "degree": "IT Systems Analyst & Developer",
+      "period": "2012–2014"
+    }
+  ]
+}

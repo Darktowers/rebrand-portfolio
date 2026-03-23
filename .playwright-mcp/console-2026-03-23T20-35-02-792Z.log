@@ -1,0 +1,6 @@
+[     719ms] [WARNING] Unrecognized feature: 'bluetooth'. @ https://codepen.io/jh3y/pen/EaVNNxa:2704
+[     719ms] [WARNING] Origin trial controlled feature not enabled: 'language-model'. @ https://codepen.io/jh3y/pen/EaVNNxa:2704
+[     719ms] [WARNING] Origin trial controlled feature not enabled: 'rewriter'. @ https://codepen.io/jh3y/pen/EaVNNxa:2704
+[     719ms] [WARNING] Unrecognized feature: 'web-share'. @ https://codepen.io/jh3y/pen/EaVNNxa:2704
+[     719ms] [WARNING] Origin trial controlled feature not enabled: 'writer'. @ https://codepen.io/jh3y/pen/EaVNNxa:2704
+[    2127ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://codepen.io/jh3y/pen/EaVNNxa:0

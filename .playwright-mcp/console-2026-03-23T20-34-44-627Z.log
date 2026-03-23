@@ -1,0 +1,6 @@
+[     484ms] [WARNING] Unrecognized feature: 'bluetooth'. @ https://codepen.io/BalintFerenczy/pen/KwdoyEN:1760
+[     484ms] [WARNING] Origin trial controlled feature not enabled: 'language-model'. @ https://codepen.io/BalintFerenczy/pen/KwdoyEN:1760
+[     484ms] [WARNING] Origin trial controlled feature not enabled: 'rewriter'. @ https://codepen.io/BalintFerenczy/pen/KwdoyEN:1760
+[     484ms] [WARNING] Unrecognized feature: 'web-share'. @ https://codepen.io/BalintFerenczy/pen/KwdoyEN:1760
+[     484ms] [WARNING] Origin trial controlled feature not enabled: 'writer'. @ https://codepen.io/BalintFerenczy/pen/KwdoyEN:1760
+[    1301ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://codepen.io/BalintFerenczy/pen/KwdoyEN:0
