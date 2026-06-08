@@ -30,11 +30,6 @@ export default function Navbar() {
 		return () => window.removeEventListener("scroll", onScroll);
 	}, []);
 
-	// Close mobile menu on route change
-	useEffect(() => {
-		setMobileOpen(false);
-	}, [pathname]);
-
 	function isActive(href: string) {
 		if (href === "/") return pathname === "/";
 		return pathname.startsWith(href);
@@ -56,7 +51,7 @@ export default function Navbar() {
 					{/* Logo */}
 					<Link
 						href="/"
-						className="font-mono font-bold text-lg tracking-wider"
+						className="focus-ring rounded-lg font-mono font-bold text-lg tracking-wider"
 						style={{ color: "var(--accent)" }}
 					>
 						<span className="text-glow">DarkTower</span>
@@ -71,7 +66,7 @@ export default function Navbar() {
 								<Link
 									key={item.key}
 									href={item.href}
-									className="relative px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
+									className="focus-ring relative px-3 py-1.5 rounded-lg text-sm font-medium transition-colors hover:text-[var(--accent)]"
 									style={{
 										color: active ? "var(--accent)" : "var(--fg-muted)",
 									}}
@@ -82,7 +77,11 @@ export default function Navbar() {
 											layoutId="nav-indicator"
 											className="absolute inset-0 rounded-lg"
 											style={{ background: "var(--accent-glow)" }}
-											transition={{ type: "spring", stiffness: 400, damping: 35 }}
+											transition={{
+												type: "spring",
+												stiffness: 400,
+												damping: 35,
+											}}
 											data-no-transition
 										/>
 									)}
@@ -96,8 +95,11 @@ export default function Navbar() {
 						<a
 							href="/cv.pdf"
 							download
-							className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold shrink-0"
-							style={{ border: "1.5px solid var(--accent)", color: "var(--accent)" }}
+							className="focus-ring hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold shrink-0 hover:bg-[var(--accent-glow)]"
+							style={{
+								border: "1.5px solid var(--accent)",
+								color: "var(--accent)",
+							}}
 						>
 							<FontAwesomeIcon icon={faDownload} className="w-3 h-3" />
 							CV
@@ -106,7 +108,7 @@ export default function Navbar() {
 						<ThemeToggle />
 						{/* Hamburger */}
 						<button
-							className="md:hidden flex flex-col gap-1.5 w-9 h-9 items-center justify-center cursor-pointer rounded-lg hover:bg-[var(--border)]"
+							className="focus-ring md:hidden flex flex-col gap-1.5 w-9 h-9 items-center justify-center cursor-pointer rounded-lg hover:bg-[var(--border)]"
 							onClick={() => setMobileOpen((v) => !v)}
 							aria-label="Toggle menu"
 							aria-expanded={mobileOpen}
@@ -115,7 +117,9 @@ export default function Navbar() {
 							<motion.span
 								className="w-5 h-0.5 block"
 								style={{ background: "var(--fg)" }}
-								animate={mobileOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+								animate={
+									mobileOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }
+								}
 								data-no-transition
 							/>
 							<motion.span
@@ -127,7 +131,9 @@ export default function Navbar() {
 							<motion.span
 								className="w-5 h-0.5 block"
 								style={{ background: "var(--fg)" }}
-								animate={mobileOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+								animate={
+									mobileOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }
+								}
 								data-no-transition
 							/>
 						</button>
@@ -145,10 +151,12 @@ export default function Navbar() {
 						exit={{ opacity: 0 }}
 					>
 						{/* Backdrop */}
-						<div
-							className="absolute inset-0"
+						<button
+							className="absolute inset-0 cursor-default"
 							style={{ background: "rgba(0,0,0,0.5)" }}
 							onClick={() => setMobileOpen(false)}
+							aria-label="Close menu"
+							type="button"
 						/>
 						{/* Panel */}
 						<motion.div
@@ -170,7 +178,8 @@ export default function Navbar() {
 									>
 										<Link
 											href={item.href}
-											className="block py-3 text-base font-medium border-b"
+											className="focus-ring block rounded-md py-3 text-base font-medium border-b"
+											onClick={() => setMobileOpen(false)}
 											style={{
 												borderColor: "var(--border)",
 												color: active ? "var(--accent)" : "var(--fg)",
