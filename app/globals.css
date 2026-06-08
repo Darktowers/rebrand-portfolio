@@ -109,6 +109,18 @@ section[id] {
 }
 
 /* ─── Glass card ──────────────────────────────────────────────── */
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 4px;
+}
+
+.focus-ring:focus-visible {
+  outline-color: var(--accent);
+  box-shadow:
+    0 0 0 4px var(--accent-glow),
+    0 0 18px var(--accent-glow);
+}
+
 .glass {
   background: var(--card-bg);
   backdrop-filter: blur(12px);

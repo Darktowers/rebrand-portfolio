@@ -10,8 +10,11 @@ export default function LanguageToggle() {
 	return (
 		<button
 			onClick={() => setLang(isEN ? "es" : "en")}
-			className="relative flex items-center w-16 h-8 rounded-full cursor-pointer overflow-hidden shrink-0"
-			style={{ background: "var(--bg-secondary)", border: "1px solid var(--border)" }}
+			className="focus-ring relative flex items-center w-16 h-8 rounded-full cursor-pointer overflow-hidden shrink-0 hover:shadow-[0_0_14px_var(--accent-glow)]"
+			style={{
+				background: "var(--bg-secondary)",
+				border: "1px solid var(--border)",
+			}}
 			aria-label={isEN ? "Switch to Spanish" : "Switch to English"}
 			type="button"
 		>

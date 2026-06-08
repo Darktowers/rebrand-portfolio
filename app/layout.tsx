@@ -21,11 +21,18 @@ export const metadata: Metadata = {
 	title: "Cristian Arrieta — React Developer",
 	description:
 		"React Developer & JavaScript Engineer with 8+ years of experience building fast, scalable web applications.",
-	keywords: ["React", "Next.js", "TypeScript", "Frontend Developer", "JavaScript"],
+	keywords: [
+		"React",
+		"Next.js",
+		"TypeScript",
+		"Frontend Developer",
+		"JavaScript",
+	],
 	authors: [{ name: "Cristian Andres Arrieta Gutierrez" }],
 	openGraph: {
 		title: "Cristian Arrieta — React Developer",
-		description: "React Developer & JavaScript Engineer based in Bogotá, Colombia.",
+		description:
+			"React Developer & JavaScript Engineer based in Bogotá, Colombia.",
 		type: "website",
 	},
 };
@@ -46,9 +53,7 @@ export default function RootLayout({
 					<LanguageProvider>
 						<AsciiBackground />
 						<Navbar />
-						<main className="relative z-10">
-							{children}
-						</main>
+						<main className="relative z-10">{children}</main>
 						<Footer />
 					</LanguageProvider>
 				</ThemeProvider>

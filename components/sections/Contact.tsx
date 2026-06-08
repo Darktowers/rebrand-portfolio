@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "motion/react";
 import { useLanguage } from "../../context/LanguageContext";
 import profile from "../../data/profile.json";
+import SectionFrame, { revealItem } from "../ui/SectionFrame";
 
 const SOCIALS = [
 	{
@@ -46,36 +47,19 @@ export default function Contact() {
 	const { t } = useLanguage();
 
 	return (
-		<section id="contact" className="relative z-10 py-24 px-4">
-			<div className="max-w-2xl mx-auto text-center">
-				{/* Section header */}
-				<motion.div
-					className="mb-10"
-					initial={{ opacity: 0, y: 30 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.5 }}
+		<SectionFrame
+			id="contact"
+			number="04"
+			title={t("contact.title")}
+			innerClassName="max-w-2xl"
+		>
+			<div className="text-center">
+				<p
+					className="text-base md:text-lg max-w-md mx-auto mb-10"
+					style={{ color: "var(--fg-muted)" }}
 				>
-					<p className="font-mono text-sm mb-2" style={{ color: "var(--accent)" }}>
-						04.
-					</p>
-					<h2
-						className="text-3xl md:text-4xl font-bold mb-4"
-						style={{ color: "var(--fg)" }}
-					>
-						{t("contact.title")}
-					</h2>
-					<div
-						className="w-12 h-0.5 mx-auto mb-6"
-						style={{ background: "var(--accent)" }}
-					/>
-					<p
-						className="text-base md:text-lg max-w-md mx-auto"
-						style={{ color: "var(--fg-muted)" }}
-					>
-						{t("contact.subtitle")}
-					</p>
-				</motion.div>
+					{t("contact.subtitle")}
+				</p>
 
 				{/* Social links */}
 				<div className="flex flex-wrap justify-center gap-4">
@@ -85,12 +69,15 @@ export default function Contact() {
 							href={social.href}
 							target={social.key !== "email" ? "_blank" : undefined}
 							rel={social.key !== "email" ? "noopener noreferrer" : undefined}
-							className="flex items-center gap-3 px-5 py-3 rounded-xl glass font-medium text-sm"
+							className="focus-ring flex items-center gap-3 px-5 py-3 rounded-xl glass font-medium text-sm"
 							style={{ color: "var(--fg)" }}
-							initial={{ opacity: 0, y: 20 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.4, delay: i * 0.08 }}
+							variants={revealItem}
+							transition={{
+								type: "spring",
+								stiffness: 360,
+								damping: 28,
+								delay: i * 0.04,
+							}}
 							whileHover={{
 								scale: 1.06,
 								y: -3,
@@ -121,12 +108,12 @@ export default function Contact() {
 				>
 					<a
 						href={`mailto:${profile.email}`}
-						className="hover:text-[var(--accent)] transition-colors"
+						className="focus-ring rounded-md hover:text-[var(--accent)] transition-colors"
 					>
 						{profile.email}
 					</a>
 				</motion.p>
 			</div>
-		</section>
+		</SectionFrame>
 	);
 }
