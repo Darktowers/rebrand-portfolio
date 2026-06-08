@@ -28,16 +28,20 @@ export default function Footer() {
 				<span className="font-mono" style={{ color: "var(--accent)" }}>
 					{profile.displayName}
 				</span>
-				<span>{t("footer.built")} — © {year}</span>
+				<span>
+					{t("footer.built")} — © {year}
+				</span>
 				<div className="flex gap-5">
 					{FOOTER_LINKS.map(({ href, icon, label }) => (
 						<a
 							key={label}
 							href={href}
 							target={href.startsWith("mailto") ? undefined : "_blank"}
-							rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+							rel={
+								href.startsWith("mailto") ? undefined : "noopener noreferrer"
+							}
 							aria-label={label}
-							className="hover:text-[var(--accent)] transition-colors"
+							className="focus-ring rounded-md hover:text-[var(--accent)] transition-colors"
 						>
 							<FontAwesomeIcon icon={icon} className="w-4 h-4" />
 						</a>

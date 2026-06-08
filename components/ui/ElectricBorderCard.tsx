@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, type ReactNode } from "react";
+import { type ReactNode, useId } from "react";
 
 interface ElectricBorderCardProps {
 	children: ReactNode;
@@ -20,7 +20,6 @@ export default function ElectricBorderCard({
 
 	return (
 		<div className={`relative ${className}`}>
-			{/* Hidden SVG filter definition */}
 			<svg
 				className="absolute w-0 h-0 overflow-hidden"
 				aria-hidden="true"
@@ -38,7 +37,7 @@ export default function ElectricBorderCard({
 						<feTurbulence
 							type="turbulence"
 							baseFrequency="0.02"
-							numOctaves="8"
+							numOctaves="6"
 							result="noise1"
 							seed="2"
 						/>
@@ -54,7 +53,7 @@ export default function ElectricBorderCard({
 						<feTurbulence
 							type="turbulence"
 							baseFrequency="0.02"
-							numOctaves="8"
+							numOctaves="6"
 							result="noise2"
 							seed="5"
 						/>
@@ -82,18 +81,27 @@ export default function ElectricBorderCard({
 				</defs>
 			</svg>
 
-			{/* Electric border — pushed outside the card so lightning is visible */}
 			<div
-				className={`absolute -inset-2 ${rounded} pointer-events-none`}
+				className={`absolute -inset-1 ${rounded} pointer-events-none z-20`}
 				style={{
-					border: `2px solid ${color}`,
-					filter: `url(#${filterId})`,
-					boxShadow: `0 0 16px ${color}88, 0 0 32px ${color}44`,
+					border: `1.5px solid ${color}`,
+					boxShadow: `0 0 12px ${color}55`,
 				}}
 				aria-hidden="true"
 			/>
 
-			{/* Card content */}
+			<div
+				className={`absolute -inset-2 ${rounded} pointer-events-none z-30`}
+				style={{
+					border: `2px solid ${color}`,
+					filter: `url(#${filterId})`,
+					boxShadow: `0 0 16px ${color}88, 0 0 32px ${color}44`,
+					transform: "translateZ(0)",
+					willChange: "filter, transform",
+				}}
+				aria-hidden="true"
+			/>
+
 			<div className="relative z-10">{children}</div>
 		</div>
 	);
