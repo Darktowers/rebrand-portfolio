@@ -50,7 +50,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 	}, []);
 
 	const t = useCallback(
-		(key: string) => resolve(translations[lang] as Record<string, unknown>, key),
+		(key: string) =>
+			resolve(translations[lang] as Record<string, unknown>, key),
 		[lang],
 	);
 

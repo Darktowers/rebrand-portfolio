@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Footer from "../components/layout/Footer";
 import Navbar from "../components/layout/Navbar";
-import AsciiBackground from "../components/ui/AsciiBackground";
+import WarpBackground from "../components/ui/WarpBackground";
 import { LanguageProvider } from "../context/LanguageContext";
 import "./globals.css";
 
@@ -51,7 +51,7 @@ export default function RootLayout({
 			<body>
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
 					<LanguageProvider>
-						<AsciiBackground />
+						<WarpBackground />
 						<Navbar />
 						<main className="relative z-10">{children}</main>
 						<Footer />

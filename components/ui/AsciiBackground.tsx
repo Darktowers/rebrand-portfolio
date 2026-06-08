@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 const CHARS = "01アイウエオカキクケコ@#$%&*<>[]{}|/\\~^";
@@ -7,8 +8,12 @@ const FONT_SIZE = 14;
 
 export default function AsciiBackground() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const pathname = usePathname();
+	const isSpaceLab = /^\/v[123](\/|$)/.test(pathname);
 
 	useEffect(() => {
+		if (isSpaceLab) return;
+
 		const canvas = canvasRef.current;
 		if (!canvas) return;
 
@@ -34,9 +39,7 @@ export default function AsciiBackground() {
 
 			// Read theme from DOM directly — no React state dependency
 			const isDark = document.documentElement.classList.contains("dark");
-			const bgColor = isDark
-				? "rgba(13,17,23,0.05)"
-				: "rgba(255,255,255,0.08)";
+			const bgColor = isDark ? "rgba(13,17,23,0.05)" : "rgba(255,255,255,0.08)";
 			const charColor = isDark
 				? "rgba(1,248,193,0.18)"
 				: "rgba(242,25,156,0.13)";
@@ -79,14 +82,9 @@ export default function AsciiBackground() {
 			cancelAnimationFrame(animationId);
 			window.removeEventListener("resize", onResize);
 		};
-	}, []); // Run once — theme is read live from DOM inside draw()
+	}, [isSpaceLab]); // Run once — theme is read live from DOM inside draw()
 
-	return (
-		<canvas
-			ref={canvasRef}
-			id="ascii-bg"
-			aria-hidden="true"
-			data-no-transition
-		/>
-	);
+	if (isSpaceLab) return null;
+
+	return <canvas ref={canvasRef} id="ascii-bg" data-no-transition />;
 }

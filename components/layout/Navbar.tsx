@@ -21,6 +21,7 @@ const NAV_ITEMS = [
 export default function Navbar() {
 	const { t } = useLanguage();
 	const pathname = usePathname();
+	const isSpaceLab = /^\/v[123](\/|$)/.test(pathname);
 	const [scrolled, setScrolled] = useState(false);
 	const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -34,6 +35,8 @@ export default function Navbar() {
 		if (href === "/") return pathname === "/";
 		return pathname.startsWith(href);
 	}
+
+	if (isSpaceLab) return null;
 
 	return (
 		<>

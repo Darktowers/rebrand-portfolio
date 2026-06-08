@@ -3,6 +3,7 @@
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { usePathname } from "next/navigation";
 import { useLanguage } from "../../context/LanguageContext";
 import profile from "../../data/profile.json";
 
@@ -14,7 +15,11 @@ const FOOTER_LINKS = [
 
 export default function Footer() {
 	const { t } = useLanguage();
+	const pathname = usePathname();
 	const year = new Date().getFullYear();
+	const isSpaceLab = /^\/v[123](\/|$)/.test(pathname);
+
+	if (isSpaceLab) return null;
 
 	return (
 		<footer
