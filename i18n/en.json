@@ -1,4 +1,14 @@
 {
+	"hud": {
+		"telemetry": "Nav Telemetry",
+		"vel": "VEL",
+		"incl": "INCL",
+		"time": "T+",
+		"dist": "DIST",
+		"lock": "LOCK",
+		"unit_dist": "ly",
+		"minimize": "Minimize telemetry"
+	},
 	"nav": {
 		"home": "Home",
 		"about": "About",
