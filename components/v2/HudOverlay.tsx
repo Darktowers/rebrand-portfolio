@@ -53,12 +53,11 @@ export default function HudOverlay() {
 			const v = base + mag * 0.806;
 			const elapsed = (now - start) / 1000;
 
-			// Values only — units/labels are localized JSX (reactive to lang).
+			// Values only - units/labels are localized JSX (reactive to lang).
 			if (velRef.current) velRef.current.textContent = v.toFixed(3);
 			if (velBarRef.current) {
 				const n = Math.round(v * 14);
-				velBarRef.current.textContent =
-					"█".repeat(n) + "░".repeat(14 - n);
+				velBarRef.current.textContent = "█".repeat(n) + "░".repeat(14 - n);
 			}
 			if (inclRef.current) {
 				// pitch from vertical steer; pointer up = nose up (positive)
@@ -76,8 +75,7 @@ export default function HudOverlay() {
 			if (lockRef.current) {
 				const approach = 1 - Math.exp(-elapsed / 240);
 				const n = Math.round(approach * 12);
-				lockRef.current.textContent =
-					"█".repeat(n) + "░".repeat(12 - n);
+				lockRef.current.textContent = "█".repeat(n) + "░".repeat(12 - n);
 			}
 		};
 		raf = requestAnimationFrame(tick);
@@ -120,7 +118,10 @@ export default function HudOverlay() {
 						onClick={() => setOpen(false)}
 						aria-label={t("hud.minimize")}
 						className="pointer-events-auto -my-1 flex h-4 w-4 items-center justify-center rounded-[3px] leading-none opacity-70 transition-opacity hover:opacity-100"
-						style={{ color: "var(--accent)", border: "1px solid var(--border-strong)" }}
+						style={{
+							color: "var(--accent)",
+							border: "1px solid var(--border-strong)",
+						}}
 					>
 						_
 					</button>

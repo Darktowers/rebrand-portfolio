@@ -50,7 +50,9 @@
       "Bash(git push *)",
       "Bash(gh pr create --base main --head codex/portfolio-animation-polish --title 'Warp Corridor 3D background + portfolio rebrand polish' --body ' *)",
       "Bash(git add *)",
-      "Bash(git commit -q -m ' *)"
+      "Bash(git commit -q -m ' *)",
+      "PowerShell($p='app/globals.css'; $c=Get-Content $p -Raw; $i=$c.IndexOf\\('.space-lab {'\\); if\\($i -lt 0\\){'marker not found'} else { Set-Content $p $c.Substring\\(0,$i\\).TrimEnd\\(\\) -NoNewline -Encoding utf8; 'truncated at '+$i })",
+      "Bash(node -e \"const en=require\\('./i18n/en.json'\\); const es=require\\('./i18n/es.json'\\); const keys=['contact.title','contact.subtitle','contact.linkedin','contact.github','contact.whatsapp','contact.email']; keys.forEach\\(k=>{const r=k.split\\('.'\\).reduce\\(\\(o,p\\)=>o&&o[p],en\\); const r2=k.split\\('.'\\).reduce\\(\\(o,p\\)=>o&&o[p],es\\); console.log\\(k,'=> EN:',JSON.stringify\\(r\\),'| ES:',JSON.stringify\\(r2\\)\\);}\\)\")"
     ]
   }
 }

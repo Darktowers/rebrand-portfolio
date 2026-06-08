@@ -17,6 +17,7 @@
 		"contact": "Contacto"
 	},
 	"hero": {
+		"available": "Disponible para proyectos",
 		"greeting": "Hola, soy",
 		"role": "Desarrollador React & Ingeniero JavaScript",
 		"bio": "Construyendo aplicaciones web rápidas y escalables con más de 8 años de experiencia.",
@@ -66,7 +67,7 @@
 	},
 	"contact": {
 		"title": "Hablemos",
-		"subtitle": "Ya sea una oportunidad, una idea de proyecto o solo un saludo — mi bandeja siempre está abierta.",
+		"subtitle": "Ya sea una oportunidad, una idea de proyecto o solo un saludo, mi bandeja siempre está abierta.",
 		"email": "Correo",
 		"linkedin": "LinkedIn",
 		"github": "GitHub",
@@ -138,7 +139,7 @@
 		},
 		"bluecell": {
 			"title": "Frontend Developer",
-			"1": "Desarrollo de aplicaciones web — estructura HTML5, estilos e interacción con JavaScript"
+			"1": "Desarrollo de aplicaciones web: estructura HTML5, estilos e interacción con JavaScript"
 		},
 		"highnutricion": {
 			"title": "Soporte IT Auxiliar",

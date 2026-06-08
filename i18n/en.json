@@ -17,6 +17,7 @@
 		"contact": "Contact"
 	},
 	"hero": {
+		"available": "Available for work",
 		"greeting": "Hi, I'm",
 		"role": "React Developer & JavaScript Engineer",
 		"bio": "Building fast, scalable web apps with 8+ years of experience.",
@@ -66,7 +67,7 @@
 	},
 	"contact": {
 		"title": "Get In Touch",
-		"subtitle": "Whether you have an opportunity, a project idea, or just want to say hi — my inbox is open.",
+		"subtitle": "Whether you have an opportunity, a project idea, or just want to say hi, my inbox is open.",
 		"email": "Email",
 		"linkedin": "LinkedIn",
 		"github": "GitHub",
@@ -138,7 +139,7 @@
 		},
 		"bluecell": {
 			"title": "Frontend Developer",
-			"1": "Development of web apps — HTML5 structure, styling and JavaScript user interaction"
+			"1": "Development of web apps: HTML5 structure, styling and JavaScript user interaction"
 		},
 		"highnutricion": {
 			"title": "IT Auxiliar Support",

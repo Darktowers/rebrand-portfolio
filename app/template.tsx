@@ -17,6 +17,7 @@ export default function Template({ children }: { children: ReactNode }) {
 				mass: 0.6,
 			}}
 			data-no-transition
+			suppressHydrationWarning
 		>
 			{children}
 		</motion.div>
