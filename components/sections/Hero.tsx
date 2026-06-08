@@ -1,9 +1,6 @@
 "use client";
 
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion, useReducedMotion } from "motion/react";
-import Link from "next/link";
 import { useLanguage } from "../../context/LanguageContext";
 import profile from "../../data/profile.json";
 import DecodeText from "../v2/DecodeText";
@@ -59,33 +56,6 @@ export default function Hero() {
 				<GlowButton href="/contact" variant="ghost">
 					{t("hero.cta_contact")}
 				</GlowButton>
-			</motion.div>
-
-			<motion.div
-				className="absolute bottom-8 left-1/2 -translate-x-1/2"
-				style={{ color: "var(--fg-muted)" }}
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ delay: 1.2 }}
-			>
-				<motion.div
-					className="inline-block"
-					animate={reduce ? undefined : { y: [0, 6, 0] }}
-					transition={{
-						duration: 1.4,
-						repeat: Number.POSITIVE_INFINITY,
-						ease: "easeInOut",
-					}}
-					data-no-transition
-				>
-					<Link
-						href="/about"
-						aria-label="Go to About"
-						className="focus-ring inline-flex rounded-full p-2"
-					>
-						<FontAwesomeIcon icon={faChevronDown} className="h-4 w-4" />
-					</Link>
-				</motion.div>
 			</motion.div>
 		</section>
 	);

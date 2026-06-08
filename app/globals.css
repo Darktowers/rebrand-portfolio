@@ -20,7 +20,7 @@
 	--border: rgba(22, 18, 26, 0.1);
 	--border-strong: rgba(22, 18, 26, 0.18);
 	--card-bg: rgba(255, 255, 255, 0.66);
-	--hud-line: rgba(22, 18, 26, 0.06);
+	--hud-line: rgba(22, 18, 26, 0.09);
 	--r-chip: 6px;
 	--r-control: 10px;
 	--r-card: 14px;
@@ -40,7 +40,7 @@
 	--border: rgba(231, 233, 238, 0.08);
 	--border-strong: rgba(231, 233, 238, 0.16);
 	--card-bg: rgba(14, 16, 21, 0.6);
-	--hud-line: rgba(231, 233, 238, 0.05);
+	--hud-line: rgba(231, 233, 238, 0.08);
 }
 
 /* --- Global theme transitions --- */
@@ -199,9 +199,39 @@ section[id] {
 	}
 }
 
+/* AI-chat style: a rotating accent arc sweeps the pill border + soft pulse. */
+.v2-chip-live {
+	position: relative;
+}
+.v2-chip-live::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	padding: 1px;
+	background: conic-gradient(
+		from var(--angle, 0deg),
+		transparent 0deg,
+		var(--accent) 70deg,
+		transparent 150deg,
+		transparent 360deg
+	);
+	-webkit-mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor;
+	mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	mask-composite: exclude;
+	pointer-events: none;
+}
 @media (prefers-reduced-motion: no-preference) {
 	.v2-chip-live {
 		animation: v2-pulse 2.6s ease-in-out infinite;
+	}
+	.v2-chip-live::before {
+		animation: v2-rotate 3s linear infinite;
 	}
 	.v2-chip-live .v2-chip-dot {
 		animation: v2-dot-pulse 1.8s ease-in-out infinite;
@@ -270,11 +300,11 @@ section[id] {
 	background-image:
 		linear-gradient(var(--hud-line) 1px, transparent 1px),
 		linear-gradient(90deg, var(--hud-line) 1px, transparent 1px);
-	background-size: 64px 64px;
+	background-size: 56px 56px;
 	mask-image: radial-gradient(
-		ellipse 80% 70% at 50% 32%,
-		#000 30%,
-		transparent 78%
+		ellipse 130% 110% at 50% 40%,
+		#000 50%,
+		transparent 92%
 	);
 }
 

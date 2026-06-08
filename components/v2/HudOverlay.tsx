@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 
@@ -17,6 +18,7 @@ const surface = {
  */
 export default function HudOverlay() {
 	const { t } = useLanguage();
+	const reduce = useReducedMotion();
 	const [open, setOpen] = useState(true);
 	const velRef = useRef<HTMLSpanElement>(null);
 	const velBarRef = useRef<HTMLSpanElement>(null);
@@ -87,9 +89,12 @@ export default function HudOverlay() {
 	}, []);
 
 	return (
-		<div
+		<motion.div
 			className="pointer-events-none fixed bottom-4 right-3 z-20 font-mono text-[10px] leading-relaxed sm:bottom-5 sm:right-5 sm:text-[11px]"
 			style={{ color: "var(--fg-muted)" }}
+			initial={reduce ? false : { opacity: 0, y: 18 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ delay: 0.6, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
 		>
 			{!open && (
 				<button
@@ -162,6 +167,6 @@ export default function HudOverlay() {
 					</span>
 				</div>
 			</div>
-		</div>
+		</motion.div>
 	);
 }
