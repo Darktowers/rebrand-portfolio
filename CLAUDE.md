@@ -88,3 +88,17 @@ All content lives in flat JSON files — no API, no database:
 - WhatsApp number in `data/profile.json` is a placeholder (`+57XXXXXXXXXX`) — update before deploy
 - Project images go in `public/my-work/images/` — filenames match `data/projects.json`
 - Always use Playwright (MCP) to navigate and screenshot websites during development
+
+## Agent skills
+
+### Issue tracker
+
+Issues and PRDs live in GitHub Issues for `Darktowers/rebrand-portfolio`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Uses default mattpocock/skills triage labels. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout: root `CONTEXT.md` plus `docs/adr/`. See `docs/agents/domain.md`.
