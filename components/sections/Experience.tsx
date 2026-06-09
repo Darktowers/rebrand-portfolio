@@ -73,9 +73,9 @@ export default function Experience() {
 									delay: reduce ? 0 : Math.min(ci * 0.06, 0.3),
 								}}
 							>
-								{/* Timeline node (same centralized pulsing dot for all) */}
+								{/* Timeline node: only the current role pulses in accent. */}
 								<div className="absolute top-5 left-2.5 flex items-center justify-center">
-									<Dot size={14} />
+									<Dot size={14} active={company.current} />
 								</div>
 
 								{/* Company card (signal-border highlight only for current) */}
