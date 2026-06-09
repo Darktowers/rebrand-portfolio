@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { m as motion } from "motion/react";
 
 interface SkeletonProps {
 	className?: string;
@@ -40,11 +40,16 @@ export function CardSkeleton() {
 
 /** Experience row skeleton */
 export function ExperienceSkeleton({ rows = 3 }: SkeletonProps) {
+	const rowKeys = Array.from(
+		{ length: rows },
+		(_, index) => `experience-skeleton-${rows}-${index}`,
+	);
+
 	return (
 		<div className="space-y-6">
-			{Array.from({ length: rows }).map((_, i) => (
+			{rowKeys.map((rowKey, i) => (
 				<motion.div
-					key={i}
+					key={rowKey}
 					className="flex gap-4"
 					initial={{ opacity: 0, x: -16 }}
 					animate={{ opacity: 1, x: 0 }}

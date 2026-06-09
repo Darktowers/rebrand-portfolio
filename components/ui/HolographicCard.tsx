@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "motion/react";
-import { useRef, type ReactNode } from "react";
+import { m as motion, useMotionValue, useSpring } from "motion/react";
+import { type ReactNode, useRef } from "react";
 
 interface HolographicCardProps {
 	children: ReactNode;

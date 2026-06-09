@@ -2,13 +2,13 @@
 
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m as motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import LanguageToggle from "../ui/LanguageToggle";
-import ThemeToggle from "../ui/ThemeToggle";
+import ThemeToggleV2 from "../v2/ThemeToggleV2";
 
 const NAV_ITEMS = [
 	{ key: "nav.home", href: "/" },
@@ -66,17 +66,21 @@ export default function Navbar() {
 								<Link
 									key={item.key}
 									href={item.href}
-									className="focus-ring relative px-3 py-1.5 rounded-lg text-sm font-medium transition-colors hover:text-[var(--accent)]"
+									className={`focus-ring relative px-3 py-1.5 rounded-lg text-sm font-medium transition-colors hover:text-[var(--accent)] ${active ? "text-glow" : ""}`}
 									style={{
 										color: active ? "var(--accent)" : "var(--fg-muted)",
 									}}
 								>
-									{t(item.key)}
+									<span className="relative z-10">{t(item.key)}</span>
 									{active && (
 										<motion.span
 											layoutId="nav-indicator"
 											className="absolute inset-0 rounded-lg"
-											style={{ background: "var(--accent-glow)" }}
+											style={{
+												background: "var(--accent-soft)",
+												boxShadow:
+													"0 0 16px -3px var(--accent-glow), inset 0 0 0 1px var(--border-strong)",
+											}}
 											transition={{
 												type: "spring",
 												stiffness: 400,
@@ -95,9 +99,9 @@ export default function Navbar() {
 						<a
 							href="/cv.pdf"
 							download
-							className="focus-ring hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold shrink-0 hover:bg-[var(--accent-glow)]"
+							className="focus-ring hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-semibold shrink-0 transition-shadow hover:bg-[var(--accent-soft)] hover:shadow-[0_0_18px_-4px_var(--accent-glow)]"
 							style={{
-								border: "1.5px solid var(--accent)",
+								border: "1px solid var(--accent)",
 								color: "var(--accent)",
 							}}
 						>
@@ -105,7 +109,7 @@ export default function Navbar() {
 							CV
 						</a>
 						<LanguageToggle />
-						<ThemeToggle />
+						<ThemeToggleV2 />
 						{/* Hamburger */}
 						<button
 							className="focus-ring md:hidden flex flex-col gap-1.5 w-9 h-9 items-center justify-center cursor-pointer rounded-lg hover:bg-[var(--border)]"

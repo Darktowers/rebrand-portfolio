@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { m as motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 export default function Template({ children }: { children: ReactNode }) {
@@ -17,6 +17,7 @@ export default function Template({ children }: { children: ReactNode }) {
 				mass: 0.6,
 			}}
 			data-no-transition
+			suppressHydrationWarning
 		>
 			{children}
 		</motion.div>

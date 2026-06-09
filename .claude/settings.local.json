@@ -42,7 +42,17 @@
       "Bash(sed -i '/style={{ border: \"\"2px solid var\\(--accent-glow\\)\"\" }}/d' /home/darktower/repos/portfolio/components/sections/About.tsx)",
       "mcp__playwright__browser_hover",
       "mcp__playwright__browser_snapshot",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(taskkill /PID 2988 /F)",
+      "PowerShell(Stop-Process -Id 2988 -Force)",
+      "Bash(git push *)",
+      "Bash(gh pr create --base main --head codex/portfolio-animation-polish --title 'Warp Corridor 3D background + portfolio rebrand polish' --body ' *)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m ' *)",
+      "PowerShell($p='app/globals.css'; $c=Get-Content $p -Raw; $i=$c.IndexOf\\('.space-lab {'\\); if\\($i -lt 0\\){'marker not found'} else { Set-Content $p $c.Substring\\(0,$i\\).TrimEnd\\(\\) -NoNewline -Encoding utf8; 'truncated at '+$i })",
+      "Bash(node -e \"const en=require\\('./i18n/en.json'\\); const es=require\\('./i18n/es.json'\\); const keys=['contact.title','contact.subtitle','contact.linkedin','contact.github','contact.whatsapp','contact.email']; keys.forEach\\(k=>{const r=k.split\\('.'\\).reduce\\(\\(o,p\\)=>o&&o[p],en\\); const r2=k.split\\('.'\\).reduce\\(\\(o,p\\)=>o&&o[p],es\\); console.log\\(k,'=> EN:',JSON.stringify\\(r\\),'| ES:',JSON.stringify\\(r2\\)\\);}\\)\")"
     ]
   }
 }

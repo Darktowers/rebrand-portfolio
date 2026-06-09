@@ -1,129 +1,340 @@
 @import "tailwindcss";
 
-/* ─── Tailwind theme tokens ───────────────────────────────────── */
+/* --- Tailwind theme tokens --- */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
 }
 
-/* ─── CSS theme variables ─────────────────────────────────────── */
+/* --- Dark Tower palette: near-black base + deep rose/crimson accent --- */
 :root {
-  --bg: #ffffff;
-  --bg-secondary: #f0f0f2;
-  --fg: #0d1117;
-  --fg-muted: #6e7681;
-  --accent: #f2199c;
-  --accent-glow: rgba(242, 25, 156, 0.12);
-  --border: rgba(0, 0, 0, 0.08);
-  --card-bg: rgba(255, 255, 255, 0.8);
-  --ascii-color: rgba(242, 25, 156, 0.1);
+	--bg: #f6f4f2;
+	--bg-secondary: #ece8e4;
+	--surface: rgba(255, 255, 255, 0.7);
+	--fg: #16121a;
+	--fg-muted: #6b6470;
+	--accent: #e11d48;
+	--accent-strong: #be123c;
+	--accent-soft: rgba(225, 29, 72, 0.1);
+	--accent-glow: rgba(225, 29, 72, 0.16);
+	--border: rgba(22, 18, 26, 0.1);
+	--border-strong: rgba(22, 18, 26, 0.18);
+	--card-bg: rgba(255, 255, 255, 0.66);
+	--hud-line: rgba(22, 18, 26, 0.04);
+	--r-chip: 6px;
+	--r-control: 10px;
+	--r-card: 14px;
+	--ease-signal: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dark {
-  --bg: #0d1117;
-  --bg-secondary: #161b22;
-  --fg: #ffffff;
-  --fg-muted: #ffffff;
-  --accent: #01f8c1;
-  --accent-glow: rgba(1, 248, 193, 0.2);
-  --border: rgba(255, 255, 255, 0.06);
-  --card-bg: rgba(22, 27, 34, 0.85);
-  --ascii-color: rgba(1, 248, 193, 0.12);
+	--bg: #08090c;
+	--bg-secondary: #0e1015;
+	--surface: rgba(18, 20, 26, 0.66);
+	--fg: #e7e9ee;
+	--fg-muted: #8b909c;
+	--accent: #fb4d6a;
+	--accent-strong: #f43f5e;
+	--accent-soft: rgba(251, 77, 106, 0.12);
+	--accent-glow: rgba(251, 77, 106, 0.22);
+	--border: rgba(231, 233, 238, 0.08);
+	--border-strong: rgba(231, 233, 238, 0.16);
+	--card-bg: rgba(14, 16, 21, 0.6);
+	--hud-line: rgba(231, 233, 238, 0.03);
 }
 
-/* ─── Global theme transitions ────────────────────────────────── */
+/* --- Global theme transitions --- */
 *,
 *::before,
 *::after {
-  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
-  transition-duration: 250ms;
-  transition-timing-function: ease;
+	transition-property:
+		background-color, border-color, color, fill, stroke, box-shadow;
+	transition-duration: 250ms;
+	transition-timing-function: ease;
 }
 
-/* Don't interfere with motion/canvas animations */
 canvas,
 [data-no-transition] {
-  transition: none !important;
+	transition: none;
 }
 
-/* ─── Base ────────────────────────────────────────────────────── */
+/* --- Base --- */
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--fg);
-  overflow-x: hidden;
-  min-height: 100dvh;
+	background-color: var(--bg);
+	color: var(--fg);
+	overflow-x: hidden;
+	min-height: 100dvh;
 }
 
-/* ─── Scrollbar ───────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+/* --- Scrollbar (adopts the rose accent) --- */
+::-webkit-scrollbar {
+	width: 9px;
+	height: 9px;
+}
+::-webkit-scrollbar-track {
+	background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--accent);
+	border-radius: 5px;
+	border: 2px solid var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--accent-strong);
+}
+html {
+	scrollbar-color: var(--accent) var(--bg-secondary);
+	scrollbar-width: thin;
+}
 
-/* ─── Nav offset for anchor links ─────────────────────────────── */
+/* --- Nav offset for anchor links --- */
 section[id] {
-  scroll-margin-top: 72px;
+	scroll-margin-top: 80px;
 }
 
-/* ─── ASCII canvas ────────────────────────────────────────────── */
-#ascii-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* ─── Skeleton shimmer ────────────────────────────────────────── */
+/* --- Skeleton shimmer --- */
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
 }
 
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--bg-secondary) 25%,
-    color-mix(in oklch, var(--bg-secondary), var(--accent) 8%) 50%,
-    var(--bg-secondary) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
-  border-radius: 0.375rem;
+	background: linear-gradient(
+		90deg,
+		var(--bg-secondary) 25%,
+		color-mix(in oklch, var(--bg-secondary), var(--accent) 8%) 50%,
+		var(--bg-secondary) 75%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.6s ease-in-out infinite;
+	border-radius: 0.375rem;
 }
 
-/* ─── Glow utilities ──────────────────────────────────────────── */
+/* --- Glow utilities --- */
 .text-glow {
-  text-shadow:
-    0 0 20px var(--accent-glow),
-    0 0 40px var(--accent-glow);
+	text-shadow:
+		0 0 20px var(--accent-glow),
+		0 0 40px var(--accent-glow);
 }
 
 .box-glow {
-  box-shadow:
-    0 0 0 1px var(--border),
-    0 0 20px var(--accent-glow),
-    0 4px 24px rgba(0, 0, 0, 0.2);
+	box-shadow:
+		0 0 0 1px var(--border),
+		0 0 20px var(--accent-glow),
+		0 4px 24px rgba(0, 0, 0, 0.2);
 }
 
-/* ─── Glass card ──────────────────────────────────────────────── */
 .focus-ring {
-  outline: 2px solid transparent;
-  outline-offset: 4px;
+	outline: 2px solid transparent;
+	outline-offset: 4px;
 }
 
 .focus-ring:focus-visible {
-  outline-color: var(--accent);
-  box-shadow:
-    0 0 0 4px var(--accent-glow),
-    0 0 18px var(--accent-glow);
+	outline-color: var(--accent);
+	box-shadow:
+		0 0 0 4px var(--accent-glow),
+		0 0 18px var(--accent-glow);
 }
 
 .glass {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
+	background: var(--card-bg);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid var(--border);
+}
+
+/* --- CLI chip / terminal label (auto-glowing) --- */
+.v2-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5ch;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	padding: 0.32rem 0.6rem;
+	border-radius: var(--r-chip);
+	border: 1px solid var(--border-strong);
+	background: var(--accent-soft);
+	color: var(--accent);
+}
+
+.v2-chip-dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--accent);
+	box-shadow: 0 0 8px var(--accent);
+}
+
+@keyframes v2-pulse {
+	0%,
+	100% {
+		box-shadow: 0 0 6px -1px var(--accent-glow);
+		border-color: var(--border-strong);
+	}
+	50% {
+		box-shadow: 0 0 22px 2px var(--accent-glow);
+		border-color: var(--accent);
+	}
+}
+
+@keyframes v2-dot-pulse {
+	0%,
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1.4);
+		opacity: 0.65;
+	}
+}
+
+/* AI-chat style: a rotating accent arc sweeps the pill border + soft pulse. */
+.v2-chip-live {
+	position: relative;
+}
+.v2-chip-live::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	padding: 1.5px;
+	background: conic-gradient(
+		from var(--angle, 0deg),
+		transparent 0deg,
+		var(--accent) 40deg,
+		rgba(255, 255, 255, 0.95) 90deg,
+		var(--accent) 140deg,
+		transparent 200deg,
+		transparent 360deg
+	);
+	-webkit-mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor;
+	mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	mask-composite: exclude;
+	filter: drop-shadow(0 0 5px var(--accent));
+	pointer-events: none;
+}
+/* Ambient "live" loops run regardless of reduced-motion (they are tiny;
+   heavy motion like the background + scroll reveals still respects it). */
+.v2-chip-live {
+	animation: v2-pulse 2.6s ease-in-out infinite;
+}
+.v2-chip-live::before {
+	animation: v2-rotate 3s linear infinite;
+}
+.v2-chip-dot {
+	animation: v2-dot-pulse 1.8s ease-in-out infinite;
+}
+
+/* --- Animated profile glow (breathing accent halo) --- */
+.v2-avatar-glow {
+	box-shadow: 0 0 30px var(--accent-glow);
+}
+@keyframes v2-avatar-glow {
+	0%,
+	100% {
+		box-shadow: 0 0 20px -2px var(--accent-glow);
+	}
+	50% {
+		box-shadow: 0 0 48px 4px var(--accent-glow);
+	}
+}
+.v2-avatar-glow {
+	animation: v2-avatar-glow 3.6s ease-in-out infinite;
+}
+
+/* --- Signal border (animated conic ring; ElectricBorderCard replacement) --- */
+@property --angle {
+	syntax: "<angle>";
+	initial-value: 0deg;
+	inherits: false;
+}
+
+.v2-signal-border {
+	position: relative;
+	border-radius: var(--r-card);
+}
+.v2-signal-border::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	padding: 1.5px;
+	background: conic-gradient(
+		from var(--angle, 0deg),
+		transparent 0deg,
+		var(--accent) 40deg,
+		transparent 120deg,
+		transparent 360deg
+	);
+	-webkit-mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor;
+	mask:
+		linear-gradient(#000 0 0) content-box,
+		linear-gradient(#000 0 0);
+	mask-composite: exclude;
+	pointer-events: none;
+}
+.v2-signal-border::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	border: 1px solid var(--border-strong);
+	pointer-events: none;
+}
+.v2-signal-border::before {
+	animation: v2-rotate 6s linear infinite;
+}
+@keyframes v2-rotate {
+	to {
+		--angle: 360deg;
+	}
+}
+
+/* --- HUD grid wash (fixed, behind content) --- */
+.v2-hud-grid {
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	background-image:
+		linear-gradient(var(--hud-line) 1px, transparent 1px),
+		linear-gradient(90deg, var(--hud-line) 1px, transparent 1px);
+	background-size: 56px 56px;
+	mask-image: radial-gradient(
+		ellipse 130% 110% at 50% 40%,
+		#000 50%,
+		transparent 92%
+	);
+}
+
+/* --- View Transition: theme wipe (top to bottom clip) --- */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation: none;
+	mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+	z-index: 1;
+}
+::view-transition-new(root) {
+	z-index: 2;
 }
