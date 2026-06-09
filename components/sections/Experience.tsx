@@ -1,5 +1,7 @@
 "use client";
 
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
@@ -140,12 +142,15 @@ export default function Experience() {
 														stiffness: 420,
 														damping: 30,
 													}}
-													className="mt-1 shrink-0 font-mono text-sm"
+													className="mt-1 shrink-0"
 													style={{ color: "var(--accent)" }}
 													data-no-transition
 													aria-hidden="true"
 												>
-													v
+													<FontAwesomeIcon
+														icon={faChevronDown}
+														className="h-3.5 w-3.5"
+													/>
 												</motion.span>
 											</div>
 										</button>

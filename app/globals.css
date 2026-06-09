@@ -236,7 +236,7 @@ section[id] {
 	.v2-chip-live::before {
 		animation: v2-rotate 3s linear infinite;
 	}
-	.v2-chip-live .v2-chip-dot {
+	.v2-chip-dot {
 		animation: v2-dot-pulse 1.8s ease-in-out infinite;
 	}
 }
