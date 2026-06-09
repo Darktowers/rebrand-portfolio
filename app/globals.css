@@ -20,7 +20,7 @@
 	--border: rgba(22, 18, 26, 0.1);
 	--border-strong: rgba(22, 18, 26, 0.18);
 	--card-bg: rgba(255, 255, 255, 0.66);
-	--hud-line: rgba(22, 18, 26, 0.055);
+	--hud-line: rgba(22, 18, 26, 0.04);
 	--r-chip: 6px;
 	--r-control: 10px;
 	--r-card: 14px;
@@ -40,7 +40,7 @@
 	--border: rgba(231, 233, 238, 0.08);
 	--border-strong: rgba(231, 233, 238, 0.16);
 	--card-bg: rgba(14, 16, 21, 0.6);
-	--hud-line: rgba(231, 233, 238, 0.045);
+	--hud-line: rgba(231, 233, 238, 0.03);
 }
 
 /* --- Global theme transitions --- */
@@ -178,11 +178,11 @@ section[id] {
 @keyframes v2-pulse {
 	0%,
 	100% {
-		box-shadow: 0 0 0 0 var(--accent-glow);
+		box-shadow: 0 0 6px -1px var(--accent-glow);
 		border-color: var(--border-strong);
 	}
 	50% {
-		box-shadow: 0 0 16px 1px var(--accent-glow);
+		box-shadow: 0 0 22px 2px var(--accent-glow);
 		border-color: var(--accent);
 	}
 }
@@ -208,12 +208,14 @@ section[id] {
 	position: absolute;
 	inset: 0;
 	border-radius: inherit;
-	padding: 1px;
+	padding: 1.5px;
 	background: conic-gradient(
 		from var(--angle, 0deg),
 		transparent 0deg,
-		var(--accent) 70deg,
-		transparent 150deg,
+		var(--accent) 40deg,
+		rgba(255, 255, 255, 0.95) 90deg,
+		var(--accent) 140deg,
+		transparent 200deg,
 		transparent 360deg
 	);
 	-webkit-mask:
@@ -224,6 +226,7 @@ section[id] {
 		linear-gradient(#000 0 0) content-box,
 		linear-gradient(#000 0 0);
 	mask-composite: exclude;
+	filter: drop-shadow(0 0 5px var(--accent));
 	pointer-events: none;
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -324,19 +327,6 @@ section[id] {
 		ellipse 130% 110% at 50% 40%,
 		#000 50%,
 		transparent 92%
-	);
-}
-
-/* --- Readability scrim --- */
-.v2-scrim {
-	position: fixed;
-	inset: 0;
-	z-index: 1;
-	pointer-events: none;
-	background: radial-gradient(
-		ellipse 70% 60% at 20% 75%,
-		var(--bg) 0%,
-		transparent 60%
 	);
 }
 
