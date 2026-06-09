@@ -28,15 +28,14 @@ export default function DecodeText({
 	delay = 0,
 }: Props) {
 	const reduce = useReducedMotion();
-	const [display, setDisplay] = useState(reduce ? text : "");
+	const [display, setDisplay] = useState("");
 	const rafRef = useRef(0);
 	const startRef = useRef(0);
 
 	useEffect(() => {
-		if (reduce) {
-			setDisplay(text);
-			return;
-		}
+		if (reduce) return;
+
+		let frame = 0;
 		let timeout: ReturnType<typeof setTimeout>;
 		const len = text.length;
 
@@ -45,6 +44,7 @@ export default function DecodeText({
 			const p = Math.min((now - startRef.current) / duration, 1);
 			const settled = Math.floor(p * len);
 			let out = "";
+
 			for (let i = 0; i < len; i++) {
 				const ch = text[i];
 				if (ch === " ") {
@@ -55,9 +55,11 @@ export default function DecodeText({
 					out += GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
 				}
 			}
-			setDisplay(out);
+
 			if (p < 1) {
-				rafRef.current = requestAnimationFrame(tick);
+				setDisplay(out);
+				frame = requestAnimationFrame(tick);
+				rafRef.current = frame;
 			} else {
 				setDisplay(text);
 			}
@@ -65,18 +67,19 @@ export default function DecodeText({
 
 		timeout = setTimeout(() => {
 			startRef.current = 0;
-			rafRef.current = requestAnimationFrame(tick);
+			frame = requestAnimationFrame(tick);
+			rafRef.current = frame;
 		}, delay);
 
 		return () => {
 			clearTimeout(timeout);
-			cancelAnimationFrame(rafRef.current);
+			cancelAnimationFrame(frame);
 		};
 	}, [text, duration, delay, reduce]);
 
 	return (
 		<Tag className={className} aria-label={text}>
-			<span aria-hidden="true">{display || " "}</span>
+			<span aria-hidden="true">{reduce ? text : display || " "}</span>
 		</Tag>
 	);
 }

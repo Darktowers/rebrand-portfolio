@@ -1,7 +1,7 @@
 "use client";
 
 import type { Variants } from "motion/react";
-import { motion, useReducedMotion } from "motion/react";
+import { m as motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 interface SectionFrameProps {
@@ -29,33 +29,6 @@ const headerVariants: Variants = {
 	show: {
 		opacity: 1,
 		y: 0,
-		transition: { duration: 0.5, ease: "easeOut" },
-	},
-};
-
-export const revealItem: Variants = {
-	hidden: { opacity: 0, y: 22 },
-	show: {
-		opacity: 1,
-		y: 0,
-		transition: { duration: 0.45, ease: "easeOut" },
-	},
-};
-
-export const revealFromLeft: Variants = {
-	hidden: { opacity: 0, x: -32 },
-	show: {
-		opacity: 1,
-		x: 0,
-		transition: { duration: 0.5, ease: "easeOut" },
-	},
-};
-
-export const revealFromRight: Variants = {
-	hidden: { opacity: 0, x: 32 },
-	show: {
-		opacity: 1,
-		x: 0,
 		transition: { duration: 0.5, ease: "easeOut" },
 	},
 };

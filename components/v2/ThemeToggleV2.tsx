@@ -1,12 +1,17 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m as motion } from "motion/react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { flushSync } from "react-dom";
+import { useSyncExternalStore } from "react";
+
+const SUN_RAYS = [0, 45, 90, 135, 180, 225, 270, 315];
+
+function subscribeToHydration(onStoreChange: () => void) {
+	queueMicrotask(onStoreChange);
+	return () => {};
+}
 
 function SunIcon() {
-	const rays = [0, 45, 90, 135, 180, 225, 270, 315];
 	return (
 		<motion.div
 			animate={{ rotate: 360 }}
@@ -26,7 +31,7 @@ function SunIcon() {
 				aria-hidden="true"
 			>
 				<circle cx="12" cy="12" r="4.5" fill="var(--accent)" />
-				{rays.map((deg) => (
+				{SUN_RAYS.map((deg) => (
 					<line
 						key={deg}
 						x1="12"
@@ -69,41 +74,19 @@ function MoonIcon() {
 
 export default function ThemeToggleV2() {
 	const { resolvedTheme, setTheme } = useTheme();
-	const [mounted, setMounted] = useState(false);
+	const mounted = useSyncExternalStore(
+		subscribeToHydration,
+		() => true,
+		() => false,
+	);
 
-	useEffect(() => setMounted(true), []);
 	if (!mounted) return <div className="w-16 h-8" />;
 
 	const isDark = resolvedTheme !== "light";
 
 	function toggle() {
 		const next = isDark ? "light" : "dark";
-		const prefersReduced = window.matchMedia(
-			"(prefers-reduced-motion: reduce)",
-		).matches;
-
-		// Fallback: unsupported or reduced motion → instant swap.
-		if (!document.startViewTransition || prefersReduced) {
-			setTheme(next);
-			return;
-		}
-
-		const transition = document.startViewTransition(() => {
-			// flushSync so next-themes' class change is applied synchronously
-			// and the API snapshots the NEW theme for ::view-transition-new(root).
-			flushSync(() => setTheme(next));
-		});
-
-		transition.ready.then(() => {
-			document.documentElement.animate(
-				{ clipPath: ["inset(0 0 100% 0)", "inset(0 0 0 0)"] },
-				{
-					duration: 600,
-					easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-					pseudoElement: "::view-transition-new(root)",
-				},
-			);
-		});
+		setTheme(next);
 	}
 
 	return (
@@ -124,7 +107,6 @@ export default function ThemeToggleV2() {
 			type="button"
 			data-no-transition
 		>
-			{/* Ambient scan sweep */}
 			<motion.div
 				className="absolute top-0 bottom-0 w-8 rounded-full pointer-events-none"
 				style={{
@@ -140,7 +122,6 @@ export default function ThemeToggleV2() {
 				}}
 			/>
 
-			{/* Thumb */}
 			<motion.div
 				className="absolute top-1 w-6 h-6 rounded-full flex items-center justify-center"
 				style={{

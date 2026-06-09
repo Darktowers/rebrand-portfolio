@@ -97,7 +97,6 @@ export default function ElectricBorderCard({
 					filter: `url(#${filterId})`,
 					boxShadow: `0 0 16px ${color}88, 0 0 32px ${color}44`,
 					transform: "translateZ(0)",
-					willChange: "filter, transform",
 				}}
 				aria-hidden="true"
 			/>

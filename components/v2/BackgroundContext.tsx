@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, use, useMemo, useState } from "react";
 
 export type BgVersion = "blackhole" | "flow" | "iso";
 
@@ -15,13 +15,13 @@ export function BackgroundProvider({
 	children: React.ReactNode;
 }) {
 	const [version, setVersion] = useState<BgVersion>("blackhole");
+	const value = useMemo(() => ({ version, setVersion }), [version]);
+
 	return (
-		<BackgroundCtx.Provider value={{ version, setVersion }}>
-			{children}
-		</BackgroundCtx.Provider>
+		<BackgroundCtx.Provider value={value}>{children}</BackgroundCtx.Provider>
 	);
 }
 
 export function useBackground() {
-	return useContext(BackgroundCtx);
+	return use(BackgroundCtx);
 }

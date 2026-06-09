@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { m as motion, useReducedMotion } from "motion/react";
 import { useLanguage } from "../../context/LanguageContext";
 import profile from "../../data/profile.json";
 import DecodeText from "../v2/DecodeText";

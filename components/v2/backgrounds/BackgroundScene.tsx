@@ -1,7 +1,6 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 import { useBackground } from "../BackgroundContext";
 import BlackHole from "./BlackHole";
 import FlowField from "./FlowField";
@@ -12,12 +11,8 @@ import IsoTerrain from "./IsoTerrain";
 export default function BackgroundScene() {
 	const { resolvedTheme } = useTheme();
 	const { version } = useBackground();
-	const [mounted, setMounted] = useState(false);
 
-	useEffect(() => setMounted(true), []);
-	if (!mounted) return null;
-
-	const dark = resolvedTheme !== "light";
+	const dark = !resolvedTheme || resolvedTheme !== "light";
 	const accent = dark ? "#fb4d6a" : "#e11d48";
 
 	return (

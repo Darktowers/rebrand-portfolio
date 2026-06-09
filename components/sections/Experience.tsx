@@ -2,7 +2,7 @@
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, m as motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import experienceData from "../../data/experience.json";
