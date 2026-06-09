@@ -1,7 +1,7 @@
 "use client";
 
 import type { Variants } from "motion/react";
-import { m as motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 interface SectionFrameProps {

@@ -1,6 +1,6 @@
 "use client";
 
-import { m as motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 export default function Template({ children }: { children: ReactNode }) {
