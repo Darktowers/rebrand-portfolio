@@ -1,6 +1,6 @@
 "use client";
 
-import { m as motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import DecodeText from "./DecodeText";
 import Dot from "./Dot";
 

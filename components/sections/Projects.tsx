@@ -1,6 +1,6 @@
 "use client";
 
-import { m as motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";

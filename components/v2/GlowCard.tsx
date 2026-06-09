@@ -1,6 +1,6 @@
 "use client";
 
-import { m as motion, useMotionTemplate, useMotionValue } from "motion/react";
+import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 import type { ReactNode } from "react";
 
 type Props = {

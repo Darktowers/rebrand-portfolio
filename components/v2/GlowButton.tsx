@@ -1,6 +1,6 @@
 "use client";
 
-import { m as motion, useMotionTemplate, useMotionValue } from "motion/react";
+import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 

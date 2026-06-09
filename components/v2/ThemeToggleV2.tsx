@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, m as motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
 
