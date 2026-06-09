@@ -22,6 +22,7 @@ const SOCIALS = [
 		handle: "in/cristian-arrieta",
 		href: profile.linkedin,
 		icon: faLinkedin,
+		download: false,
 	},
 	{
 		key: "github",
@@ -29,6 +30,7 @@ const SOCIALS = [
 		handle: "Darktowers",
 		href: profile.github,
 		icon: faGithub,
+		download: false,
 	},
 	{
 		key: "whatsapp",
@@ -36,6 +38,15 @@ const SOCIALS = [
 		handle: "direct message",
 		href: `https://wa.me/${profile.whatsapp.replace(/\D/g, "")}`,
 		icon: faWhatsapp,
+		download: false,
+	},
+	{
+		key: "cv",
+		labelKey: "hero.cta_cv",
+		handle: "resume.pdf",
+		href: "/cv.pdf",
+		icon: faDownload,
+		download: true,
 	},
 ] as const;
 
@@ -115,27 +126,16 @@ export default function Contact() {
 					</div>
 				</motion.div>
 
-				{/* Download CV (primary on mobile, where the navbar CV is hidden) */}
-				<motion.div className="mb-8" {...rise}>
-					<GlowButton href="/cv.pdf" variant="ghost" download>
-						<FontAwesomeIcon
-							icon={faDownload}
-							className="h-4 w-4"
-							aria-hidden="true"
-						/>
-						{t("hero.cta_cv")}
-					</GlowButton>
-				</motion.div>
-
-				{/* Secondary contact methods */}
-				<div className="grid gap-4 sm:grid-cols-3">
+				{/* Contact methods + CV download (CV is mobile-accessible here) */}
+				<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 					{SOCIALS.map((social) => (
 						<motion.div key={social.key} {...rise}>
 							<GlowCard className="h-full">
 								<a
 									href={social.href}
-									target="_blank"
-									rel="noopener noreferrer"
+									download={social.download}
+									target={social.download ? undefined : "_blank"}
+									rel={social.download ? undefined : "noopener noreferrer"}
 									className="focus-ring flex h-full items-center gap-3 rounded-[14px] p-4"
 									style={{ color: "var(--fg)" }}
 								>
