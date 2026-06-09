@@ -178,8 +178,6 @@ export default function Experience() {
 															return (
 																<motion.div
 																	key={role.id}
-																	className="glass rounded-[10px] p-4"
-																	style={{ border: "1px solid var(--border)" }}
 																	initial={
 																		reduce ? false : { opacity: 0, y: 10 }
 																	}
@@ -191,43 +189,45 @@ export default function Experience() {
 																		delay: reduce ? 0 : ri * 0.04,
 																	}}
 																>
-																	<p
-																		className="mb-2 text-sm font-semibold"
-																		style={{ color: "var(--fg)" }}
-																	>
-																		{t(titleKey)}
-																	</p>
-																	<span className="v2-chip mb-3">
-																		{formatDate(
-																			role.start,
-																			t("experience.present"),
-																		)}{" "}
-																		-{" "}
-																		{formatDate(
-																			role.end,
-																			t("experience.present"),
-																		)}
-																	</span>
-																	<ul className="mt-3 space-y-1.5">
-																		{role.bulletKeys.map((bKey) => (
-																			<li
-																				key={bKey}
-																				className="flex gap-2 text-sm leading-relaxed"
-																				style={{ color: "var(--fg-muted)" }}
-																			>
-																				<span
-																					className="mt-1.5 h-1 w-1 shrink-0 rounded-full"
-																					style={{
-																						background: "var(--accent)",
-																						boxShadow:
-																							"0 0 6px var(--accent-glow)",
-																					}}
-																					aria-hidden="true"
-																				/>
-																				{t(bKey)}
-																			</li>
-																		))}
-																	</ul>
+																	<GlowCard className="p-4">
+																		<p
+																			className="mb-2 text-sm font-semibold"
+																			style={{ color: "var(--fg)" }}
+																		>
+																			{t(titleKey)}
+																		</p>
+																		<span className="v2-chip mb-3">
+																			{formatDate(
+																				role.start,
+																				t("experience.present"),
+																			)}{" "}
+																			-{" "}
+																			{formatDate(
+																				role.end,
+																				t("experience.present"),
+																			)}
+																		</span>
+																		<ul className="mt-3 space-y-1.5">
+																			{role.bulletKeys.map((bKey) => (
+																				<li
+																					key={bKey}
+																					className="flex gap-2 text-sm leading-relaxed"
+																					style={{ color: "var(--fg-muted)" }}
+																				>
+																					<span
+																						className="mt-1.5 h-1 w-1 shrink-0 rounded-full"
+																						style={{
+																							background: "var(--accent)",
+																							boxShadow:
+																								"0 0 6px var(--accent-glow)",
+																						}}
+																						aria-hidden="true"
+																					/>
+																					{t(bKey)}
+																				</li>
+																			))}
+																		</ul>
+																	</GlowCard>
 																</motion.div>
 															);
 														})}
