@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
+import { createSteeringInput } from "./backgrounds/steeringInput";
 
 const surface = {
 	border: "1px solid var(--border-strong)",
@@ -31,25 +32,22 @@ export default function HudOverlay() {
 		const reduce = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
-		let px = 0;
-		let py = 0;
+		const input = { x: 0, y: 0 };
 		let sx = 0;
 		let sy = 0;
 		const start = performance.now();
 		let raf = 0;
 
-		const onMove = (e: PointerEvent) => {
-			px = (e.clientX / window.innerWidth) * 2 - 1;
-			py = (e.clientY / window.innerHeight) * 2 - 1;
-		};
-		window.addEventListener("pointermove", onMove, { passive: true });
+		const destroySteeringInput = createSteeringInput(input, {
+			enableOrientation: !reduce,
+		});
 
 		const pad = (n: number) => String(Math.floor(n)).padStart(2, "0");
 
 		const tick = (now: number) => {
 			raf = requestAnimationFrame(tick);
-			sx += (px - sx) * 0.04;
-			sy += (py - sy) * 0.04;
+			sx += (input.x - sx) * 0.04;
+			sy += (input.y - sy) * 0.04;
 			const mag = Math.min(1, Math.abs(sx) * 0.6 + Math.abs(sy) * 0.4);
 			const base = reduce ? 0.11 : 0.182;
 			const v = base + mag * 0.806;
@@ -84,7 +82,7 @@ export default function HudOverlay() {
 
 		return () => {
 			cancelAnimationFrame(raf);
-			window.removeEventListener("pointermove", onMove);
+			destroySteeringInput();
 		};
 	}, []);
 

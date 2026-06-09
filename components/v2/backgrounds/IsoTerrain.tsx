@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { createSteeringInput } from "./steeringInput";
 
 type Props = { accent: string; dark: boolean };
 
@@ -98,10 +99,9 @@ export default function IsoTerrain({ accent, dark }: Props) {
 		let raf = 0;
 		let running = true;
 
-		const onMove = (e: PointerEvent) => {
-			pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
-			pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
-		};
+		const destroySteeringInput = createSteeringInput(pointer, {
+			enableOrientation: !reduce,
+		});
 		const onResize = () => {
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
@@ -123,7 +123,6 @@ export default function IsoTerrain({ accent, dark }: Props) {
 			} else cancelAnimationFrame(raf);
 		};
 
-		window.addEventListener("pointermove", onMove, { passive: true });
 		window.addEventListener("resize", onResize);
 		document.addEventListener("visibilitychange", onVisibility);
 		loop();
@@ -131,7 +130,7 @@ export default function IsoTerrain({ accent, dark }: Props) {
 		return () => {
 			running = false;
 			cancelAnimationFrame(raf);
-			window.removeEventListener("pointermove", onMove);
+			destroySteeringInput();
 			window.removeEventListener("resize", onResize);
 			document.removeEventListener("visibilitychange", onVisibility);
 			geo.dispose();
