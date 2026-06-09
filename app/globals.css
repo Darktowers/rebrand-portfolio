@@ -20,7 +20,7 @@
 	--border: rgba(22, 18, 26, 0.1);
 	--border-strong: rgba(22, 18, 26, 0.18);
 	--card-bg: rgba(255, 255, 255, 0.66);
-	--hud-line: rgba(22, 18, 26, 0.09);
+	--hud-line: rgba(22, 18, 26, 0.055);
 	--r-chip: 6px;
 	--r-control: 10px;
 	--r-card: 14px;
@@ -40,7 +40,7 @@
 	--border: rgba(231, 233, 238, 0.08);
 	--border-strong: rgba(231, 233, 238, 0.16);
 	--card-bg: rgba(14, 16, 21, 0.6);
-	--hud-line: rgba(231, 233, 238, 0.08);
+	--hud-line: rgba(231, 233, 238, 0.045);
 }
 
 /* --- Global theme transitions --- */
@@ -235,6 +235,25 @@ section[id] {
 	}
 	.v2-chip-live .v2-chip-dot {
 		animation: v2-dot-pulse 1.8s ease-in-out infinite;
+	}
+}
+
+/* --- Animated profile glow (breathing accent halo) --- */
+.v2-avatar-glow {
+	box-shadow: 0 0 30px var(--accent-glow);
+}
+@keyframes v2-avatar-glow {
+	0%,
+	100% {
+		box-shadow: 0 0 20px -2px var(--accent-glow);
+	}
+	50% {
+		box-shadow: 0 0 48px 4px var(--accent-glow);
+	}
+}
+@media (prefers-reduced-motion: no-preference) {
+	.v2-avatar-glow {
+		animation: v2-avatar-glow 3.6s ease-in-out infinite;
 	}
 }
 

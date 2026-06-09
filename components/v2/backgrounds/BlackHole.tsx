@@ -71,22 +71,6 @@ const diskFrag = /* glsl */ `
 	}
 `;
 
-const ringFrag = /* glsl */ `
-	precision highp float;
-	uniform float uTime;
-	uniform vec3 uAccent;
-	varying float vRadius;
-	varying float vAngle;
-	void main() {
-		// vRadius runs uInner..uOuter; normalize roughly to 0..1 across the thin ring
-		float band = smoothstep(0.0, 0.5, vRadius) * smoothstep(1.0, 0.5, vRadius);
-		float shimmer = 0.6 + 0.4 * sin(vAngle * 24.0 + uTime * 1.5);
-		float a = band * shimmer;
-		vec3 col = mix(uAccent, vec3(1.0), band * 0.1);
-		gl_FragColor = vec4(col * a * 0.22, a * 0.26);
-	}
-`;
-
 const pointVert = /* glsl */ `
 	attribute float aSeed;
 	varying float vGlow;
@@ -197,23 +181,6 @@ export default function BlackHole({ accent, dark }: Props) {
 		});
 		const disk = new THREE.Mesh(diskGeo, diskMat);
 		group.add(disk);
-
-		// Lensing shimmer ring
-		const ringGeo = new THREE.RingGeometry(0.95, 1.22, 160, 1);
-		const ringMat = new THREE.ShaderMaterial({
-			vertexShader: diskVert,
-			fragmentShader: ringFrag,
-			uniforms: {
-				uTime: { value: 0 },
-				uAccent: { value: accentColor },
-			},
-			transparent: true,
-			blending: pointsBlending,
-			depthWrite: false,
-			side: THREE.DoubleSide,
-		});
-		const ring = new THREE.Mesh(ringGeo, ringMat);
-		group.add(ring);
 
 		// Particle infall
 		const COUNT = 450;
@@ -362,7 +329,6 @@ export default function BlackHole({ accent, dark }: Props) {
 			const t = clock.elapsedTime;
 			// Hole churns very slowly; it is a distant destination.
 			diskMat.uniforms.uTime.value = t * 0.18;
-			ringMat.uniforms.uTime.value = t * 0.18;
 			// Game-like piloting: cursor steers + accelerates the warp (v0 feel).
 			steerX += (pointer.x - steerX) * 0.04;
 			steerY += (pointer.y - steerY) * 0.04;
@@ -449,8 +415,6 @@ export default function BlackHole({ accent, dark }: Props) {
 			(horizon.material as THREE.Material).dispose();
 			diskGeo.dispose();
 			diskMat.dispose();
-			ringGeo.dispose();
-			ringMat.dispose();
 			pointsGeo.dispose();
 			pointsMat.dispose();
 			starGeometry.dispose();

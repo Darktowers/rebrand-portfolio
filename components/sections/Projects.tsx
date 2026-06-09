@@ -5,9 +5,9 @@ import Image from "next/image";
 import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import projectsData from "../../data/projects.json";
-import DecodeText from "../v2/DecodeText";
 import GlowButton from "../v2/GlowButton";
 import GlowCard from "../v2/GlowCard";
+import PageHeader from "../v2/PageHeader";
 
 interface Project {
 	id: string;
@@ -87,30 +87,7 @@ export default function Projects() {
 	return (
 		<section id="projects" className="relative z-10 py-24 px-5">
 			<div className="max-w-6xl mx-auto">
-				{/* Heading */}
-				<motion.div
-					className="mb-12 text-center"
-					initial={{ opacity: 0, y: 24 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true, margin: "-80px" }}
-					transition={{ duration: reduce ? 0 : 0.5, ease: "easeOut" }}
-				>
-					<p
-						className="font-mono text-sm mb-2"
-						style={{ color: "var(--accent)" }}
-					>
-						03.
-					</p>
-					<DecodeText
-						as="h2"
-						text={t("projects.title")}
-						className="text-3xl md:text-4xl font-bold text-glow"
-					/>
-					<div
-						className="w-12 h-0.5 mx-auto mt-3"
-						style={{ background: "var(--accent)" }}
-					/>
-				</motion.div>
+				<PageHeader index="02" eyebrow="WORK" title={t("projects.title")} />
 
 				{/* Featured project, full-width signal-border card */}
 				{featured && (

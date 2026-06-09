@@ -4,8 +4,8 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import experienceData from "../../data/experience.json";
-import DecodeText from "../v2/DecodeText";
 import GlowCard from "../v2/GlowCard";
+import PageHeader from "../v2/PageHeader";
 
 function formatDate(dateStr: string | null, presentLabel: string): string {
 	if (!dateStr) return presentLabel;
@@ -42,40 +42,7 @@ export default function Experience() {
 			id="experience"
 			className="relative z-10 mx-auto max-w-6xl px-5 py-24"
 		>
-			{/* Heading */}
-			<motion.div
-				className="mb-12"
-				initial={reduce ? false : { opacity: 0, y: 24 }}
-				whileInView={{ opacity: 1, y: 0 }}
-				viewport={{ once: true, margin: "-80px" }}
-				transition={{ duration: 0.5, ease: "easeOut" }}
-			>
-				<p
-					className="mb-2 font-mono text-sm"
-					style={{ color: "var(--accent)" }}
-				>
-					02.
-				</p>
-				<DecodeText
-					text={t("experience.title")}
-					as="h2"
-					className="text-3xl font-bold tracking-tight md:text-4xl"
-					duration={800}
-				/>
-				<motion.div
-					className="mt-3 h-0.5 w-12 origin-left"
-					style={{ background: "var(--accent)" }}
-					initial={{ scaleX: 0 }}
-					whileInView={{ scaleX: 1 }}
-					viewport={{ once: true }}
-					transition={{
-						duration: reduce ? 0 : 0.45,
-						ease: "easeOut",
-						delay: reduce ? 0 : 0.12,
-					}}
-					data-no-transition
-				/>
-			</motion.div>
+			<PageHeader index="01" eyebrow="HISTORY" title={t("experience.title")} />
 
 			{/* Timeline */}
 			<div className="relative">

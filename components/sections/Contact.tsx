@@ -10,10 +10,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion, useReducedMotion } from "motion/react";
 import { useLanguage } from "../../context/LanguageContext";
 import profile from "../../data/profile.json";
-import SectionFrame, { revealItem } from "../ui/SectionFrame";
-import DecodeText from "../v2/DecodeText";
 import GlowButton from "../v2/GlowButton";
 import GlowCard from "../v2/GlowCard";
+import PageHeader from "../v2/PageHeader";
 
 const SOCIALS = [
 	{
@@ -43,48 +42,47 @@ export default function Contact() {
 	const { t } = useLanguage();
 	const reduce = useReducedMotion();
 
+	const rise = reduce
+		? {}
+		: {
+				initial: { opacity: 0, y: 18 },
+				whileInView: { opacity: 1, y: 0 },
+				viewport: { once: true, amount: 0.3 },
+				transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
+			};
+
 	return (
-		<SectionFrame
+		<section
 			id="contact"
-			number="04"
-			title={t("contact.title")}
-			innerClassName="max-w-6xl"
+			className="relative z-10 mx-auto max-w-6xl px-5 py-24 md:py-32"
 		>
-			<div className="mx-auto max-w-3xl px-5">
-				{/* Heading row: decoded label + availability chip */}
+			<PageHeader index="03" eyebrow="CONNECT" title={t("contact.title")} />
+
+			<div className="max-w-3xl">
 				<motion.div
-					className="mb-4 flex flex-wrap items-center justify-center gap-3"
-					variants={revealItem}
+					className="mb-6 flex flex-wrap items-center gap-3"
+					{...rise}
 				>
-					<DecodeText
-						text="Contact"
-						className="text-glow font-mono text-xs uppercase tracking-[0.2em]"
-						as="span"
-					/>
-					<span className="v2-chip v2-chip-live" aria-hidden="false">
+					<span className="v2-chip v2-chip-live">
 						<span className="v2-chip-dot" />
-						available for work
+						{t("hero.available")}
 					</span>
-				</motion.div>
-
-				<motion.p
-					className="mx-auto mb-3 max-w-md text-center text-base md:text-lg"
-					style={{ color: "var(--fg-muted)" }}
-					variants={revealItem}
-				>
-					{t("contact.subtitle")}
-				</motion.p>
-
-				{/* Location chip */}
-				<motion.div className="mb-10 flex justify-center" variants={revealItem}>
 					<span className="v2-chip">
 						<span className="v2-chip-dot" />
 						{profile.location}
 					</span>
 				</motion.div>
 
+				<motion.p
+					className="mb-8 max-w-md text-base md:text-lg"
+					style={{ color: "var(--fg-muted)" }}
+					{...rise}
+				>
+					{t("contact.subtitle")}
+				</motion.p>
+
 				{/* Primary CTA: email (signal-bordered highlight card) */}
-				<motion.div variants={revealItem} className="mb-8">
+				<motion.div className="mb-8" {...rise}>
 					<div className="v2-signal-border">
 						<GlowCard className="p-6 sm:p-7">
 							<div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
@@ -118,21 +116,8 @@ export default function Contact() {
 
 				{/* Secondary contact methods */}
 				<div className="grid gap-4 sm:grid-cols-3">
-					{SOCIALS.map((social, i) => (
-						<motion.div
-							key={social.key}
-							variants={revealItem}
-							transition={
-								reduce
-									? undefined
-									: {
-											type: "spring",
-											stiffness: 360,
-											damping: 28,
-											delay: i * 0.05,
-										}
-							}
-						>
+					{SOCIALS.map((social) => (
+						<motion.div key={social.key} {...rise}>
 							<GlowCard className="h-full">
 								<a
 									href={social.href}
@@ -172,6 +157,6 @@ export default function Contact() {
 					))}
 				</div>
 			</div>
-		</SectionFrame>
+		</section>
 	);
 }

@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useLanguage } from "../../context/LanguageContext";
 import profile from "../../data/profile.json";
 import skills from "../../data/skills.json";
-import DecodeText from "../v2/DecodeText";
 import GlowCard from "../v2/GlowCard";
+import PageHeader from "../v2/PageHeader";
 
 const SKILL_CATEGORY_KEYS = [
 	{ key: "frontend", labelKey: "about.frontend" },
@@ -33,18 +33,7 @@ export default function About() {
 	return (
 		<section id="about" className="relative w-full py-24 md:py-32">
 			<div className="max-w-6xl mx-auto px-5">
-				{/* Section header */}
-				<motion.div className="mb-14" {...reveal()}>
-					<span className="v2-chip v2-chip-live mb-4">
-						<span className="v2-chip-dot" />
-						00 / WHOAMI
-					</span>
-					<DecodeText
-						text={t("about.title")}
-						as="h2"
-						className="block text-3xl md:text-5xl font-bold tracking-tight text-glow"
-					/>
-				</motion.div>
+				<PageHeader index="00" eyebrow="WHOAMI" title={t("about.title")} />
 
 				{/* Identity card: photo + bio (featured signal border) */}
 				<motion.div className="mb-16" {...reveal(0.05)}>
@@ -56,10 +45,9 @@ export default function About() {
 							{/* Photo */}
 							<div className="shrink-0">
 								<div
-									className="relative w-44 h-44 md:w-56 md:h-56 rounded-full overflow-hidden"
+									className="v2-avatar-glow relative w-44 h-44 md:w-56 md:h-56 rounded-full overflow-hidden"
 									style={{
 										border: "1px solid var(--border-strong)",
-										boxShadow: "0 0 32px var(--accent-glow)",
 									}}
 								>
 									<Image
