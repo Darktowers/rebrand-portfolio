@@ -5,7 +5,7 @@ import {
 	faLinkedin,
 	faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion, useReducedMotion } from "motion/react";
 import { useLanguage } from "../../context/LanguageContext";
@@ -113,6 +113,18 @@ export default function Contact() {
 							</div>
 						</GlowCard>
 					</div>
+				</motion.div>
+
+				{/* Download CV (primary on mobile, where the navbar CV is hidden) */}
+				<motion.div className="mb-8" {...rise}>
+					<GlowButton href="/cv.pdf" variant="ghost" download>
+						<FontAwesomeIcon
+							icon={faDownload}
+							className="h-4 w-4"
+							aria-hidden="true"
+						/>
+						{t("hero.cta_cv")}
+					</GlowButton>
 				</motion.div>
 
 				{/* Secondary contact methods */}
