@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import projectsData from "../../data/projects.json";
+import Dot from "../v2/Dot";
 import GlowButton from "../v2/GlowButton";
 import GlowCard from "../v2/GlowCard";
 import PageHeader from "../v2/PageHeader";
@@ -119,7 +120,7 @@ export default function Projects() {
 									{/* Content side */}
 									<div className="p-6 md:p-8 flex flex-col justify-center">
 										<span className="v2-chip v2-chip-live self-start mb-4">
-											<span className="v2-chip-dot" />
+											<Dot />
 											{t("projects.featured")}
 										</span>
 										<h3

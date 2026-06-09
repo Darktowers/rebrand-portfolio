@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import experienceData from "../../data/experience.json";
+import Dot from "../v2/Dot";
 import GlowCard from "../v2/GlowCard";
 import PageHeader from "../v2/PageHeader";
 
@@ -72,33 +73,9 @@ export default function Experience() {
 									delay: reduce ? 0 : Math.min(ci * 0.06, 0.3),
 								}}
 							>
-								{/* Timeline node */}
+								{/* Timeline node (same centralized pulsing dot for all) */}
 								<div className="absolute top-5 left-2.5 flex items-center justify-center">
-									{company.current ? (
-										<span className="relative flex h-4 w-4">
-											{!reduce && (
-												<span
-													className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
-													style={{ background: "var(--accent)" }}
-												/>
-											)}
-											<span
-												className="relative inline-flex h-4 w-4 rounded-full"
-												style={{
-													background: "var(--accent)",
-													boxShadow: "0 0 12px var(--accent-glow)",
-												}}
-											/>
-										</span>
-									) : (
-										<span
-											className="h-3 w-3 rounded-full"
-											style={{
-												background: "var(--fg-muted)",
-												border: "2px solid var(--bg)",
-											}}
-										/>
-									)}
+									<Dot size={14} />
 								</div>
 
 								{/* Company card (signal-border highlight only for current) */}
@@ -123,7 +100,7 @@ export default function Experience() {
 														</span>
 														{company.current && (
 															<span className="v2-chip v2-chip-live">
-																<span className="v2-chip-dot" />
+																<Dot />
 																{t("experience.current")}
 															</span>
 														)}

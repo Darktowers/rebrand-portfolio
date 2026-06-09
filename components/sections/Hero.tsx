@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { useLanguage } from "../../context/LanguageContext";
 import profile from "../../data/profile.json";
 import DecodeText from "../v2/DecodeText";
+import Dot from "../v2/Dot";
 import GlowButton from "../v2/GlowButton";
 
 export default function Hero() {
@@ -18,7 +19,7 @@ export default function Hero() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5 }}
 			>
-				<span className="v2-chip-dot" />
+				<Dot />
 				{t("hero.available")}
 			</motion.span>
 

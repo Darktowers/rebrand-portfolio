@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion, useReducedMotion } from "motion/react";
 import { useLanguage } from "../../context/LanguageContext";
 import profile from "../../data/profile.json";
+import Dot from "../v2/Dot";
 import GlowButton from "../v2/GlowButton";
 import GlowCard from "../v2/GlowCard";
 import PageHeader from "../v2/PageHeader";
@@ -64,11 +65,11 @@ export default function Contact() {
 					{...rise}
 				>
 					<span className="v2-chip v2-chip-live">
-						<span className="v2-chip-dot" />
+						<Dot />
 						{t("hero.available")}
 					</span>
 					<span className="v2-chip">
-						<span className="v2-chip-dot" />
+						<Dot />
 						{profile.location}
 					</span>
 				</motion.div>

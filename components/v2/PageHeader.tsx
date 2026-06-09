@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import DecodeText from "./DecodeText";
+import Dot from "./Dot";
 
 type Props = {
 	/** Two-digit CLI index, e.g. "00". */
@@ -31,7 +32,7 @@ export default function PageHeader({
 			transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
 		>
 			<span className="v2-chip v2-chip-live mb-4">
-				<span className="v2-chip-dot" />
+				<Dot />
 				{index} / {eyebrow}
 			</span>
 			<DecodeText
