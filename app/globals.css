@@ -229,16 +229,16 @@ section[id] {
 	filter: drop-shadow(0 0 5px var(--accent));
 	pointer-events: none;
 }
-@media (prefers-reduced-motion: no-preference) {
-	.v2-chip-live {
-		animation: v2-pulse 2.6s ease-in-out infinite;
-	}
-	.v2-chip-live::before {
-		animation: v2-rotate 3s linear infinite;
-	}
-	.v2-chip-dot {
-		animation: v2-dot-pulse 1.8s ease-in-out infinite;
-	}
+/* Ambient "live" loops run regardless of reduced-motion (they are tiny;
+   heavy motion like the background + scroll reveals still respects it). */
+.v2-chip-live {
+	animation: v2-pulse 2.6s ease-in-out infinite;
+}
+.v2-chip-live::before {
+	animation: v2-rotate 3s linear infinite;
+}
+.v2-chip-dot {
+	animation: v2-dot-pulse 1.8s ease-in-out infinite;
 }
 
 /* --- Animated profile glow (breathing accent halo) --- */
@@ -254,10 +254,8 @@ section[id] {
 		box-shadow: 0 0 48px 4px var(--accent-glow);
 	}
 }
-@media (prefers-reduced-motion: no-preference) {
-	.v2-avatar-glow {
-		animation: v2-avatar-glow 3.6s ease-in-out infinite;
-	}
+.v2-avatar-glow {
+	animation: v2-avatar-glow 3.6s ease-in-out infinite;
 }
 
 /* --- Signal border (animated conic ring; ElectricBorderCard replacement) --- */
@@ -302,10 +300,8 @@ section[id] {
 	border: 1px solid var(--border-strong);
 	pointer-events: none;
 }
-@media (prefers-reduced-motion: no-preference) {
-	.v2-signal-border::before {
-		animation: v2-rotate 6s linear infinite;
-	}
+.v2-signal-border::before {
+	animation: v2-rotate 6s linear infinite;
 }
 @keyframes v2-rotate {
 	to {

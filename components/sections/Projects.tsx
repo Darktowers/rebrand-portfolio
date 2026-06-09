@@ -85,7 +85,7 @@ export default function Projects() {
 	const rest = projects.filter((p) => !p.featured);
 
 	return (
-		<section id="projects" className="relative z-10 py-24 px-5">
+		<section id="projects" className="relative z-10 px-5 py-24 md:py-32">
 			<div className="max-w-6xl mx-auto">
 				<PageHeader index="02" eyebrow="WORK" title={t("projects.title")} />
 

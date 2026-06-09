@@ -42,7 +42,7 @@ export default function Experience() {
 	return (
 		<section
 			id="experience"
-			className="relative z-10 mx-auto max-w-6xl px-5 py-24"
+			className="relative z-10 mx-auto max-w-6xl px-5 py-24 md:py-32"
 		>
 			<PageHeader index="01" eyebrow="HISTORY" title={t("experience.title")} />
 
