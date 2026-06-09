@@ -1,6 +1,6 @@
 "use client";
 
-import { m as motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 
