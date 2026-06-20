@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
-import { createSteeringInput } from "./steeringInput";
+import { useThreeScene } from "./useThreeScene";
 
 type Props = { accent: string; dark: boolean };
 
@@ -47,99 +47,42 @@ const frag = /* glsl */ `
 export default function IsoTerrain({ accent, dark }: Props) {
 	const mountRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
-		const mount = mountRef.current;
-		if (!mount) return;
-		const reduce = window.matchMedia(
-			"(prefers-reduced-motion: reduce)",
-		).matches;
+	useThreeScene(mountRef, {
+		camera: { fov: 50, position: [0, 4.2, 7], lookAt: [0, 0, -2] },
+		dependencies: [accent, dark],
+		setup: ({ scene, camera, pointer, reduce }) => {
+			const geo = new THREE.PlaneGeometry(30, 30, 200, 200);
+			const mat = new THREE.ShaderMaterial({
+				vertexShader: vert,
+				fragmentShader: frag,
+				uniforms: {
+					uTime: { value: 0 },
+					uSlow: { value: reduce ? 0.5 : 1 },
+					uAccent: { value: new THREE.Color(accent) },
+					uOpacity: { value: dark ? 0.9 : 0.7 },
+				},
+				transparent: true,
+				blending: dark ? THREE.AdditiveBlending : THREE.NormalBlending,
+				depthWrite: false,
+				wireframe: false,
+			});
+			const mesh = new THREE.Mesh(geo, mat);
+			mesh.rotation.x = -Math.PI / 2.1;
+			scene.add(mesh);
 
-		let renderer: THREE.WebGLRenderer;
-		try {
-			renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-		} catch {
-			return;
-		}
-		renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-		renderer.setSize(window.innerWidth, window.innerHeight);
-		renderer.setClearColor(0x000000, 0);
-		mount.appendChild(renderer.domElement);
-
-		const scene = new THREE.Scene();
-		const camera = new THREE.PerspectiveCamera(
-			50,
-			window.innerWidth / window.innerHeight,
-			0.1,
-			100,
-		);
-		camera.position.set(0, 4.2, 7);
-		camera.lookAt(0, 0, -2);
-
-		const geo = new THREE.PlaneGeometry(30, 30, 200, 200);
-		const mat = new THREE.ShaderMaterial({
-			vertexShader: vert,
-			fragmentShader: frag,
-			uniforms: {
-				uTime: { value: 0 },
-				uSlow: { value: reduce ? 0.5 : 1 },
-				uAccent: { value: new THREE.Color(accent) },
-				uOpacity: { value: dark ? 0.9 : 0.7 },
-			},
-			transparent: true,
-			blending: dark ? THREE.AdditiveBlending : THREE.NormalBlending,
-			depthWrite: false,
-			wireframe: false,
-		});
-		const mesh = new THREE.Mesh(geo, mat);
-		mesh.rotation.x = -Math.PI / 2.1;
-		scene.add(mesh);
-
-		const clock = new THREE.Clock();
-		const pointer = new THREE.Vector2(0, 0);
-		let raf = 0;
-		let running = true;
-
-		const destroySteeringInput = createSteeringInput(pointer, {
-			enableOrientation: !reduce,
-		});
-		const onResize = () => {
-			camera.aspect = window.innerWidth / window.innerHeight;
-			camera.updateProjectionMatrix();
-			renderer.setSize(window.innerWidth, window.innerHeight);
-		};
-		const loop = () => {
-			if (!running) return;
-			raf = requestAnimationFrame(loop);
-			mat.uniforms.uTime.value = clock.elapsedTime;
-			camera.position.x += (pointer.x * 1.2 - camera.position.x) * 0.03;
-			camera.lookAt(0, 0, -2);
-			renderer.render(scene, camera);
-		};
-		const onVisibility = () => {
-			running = !document.hidden;
-			if (running) {
-				clock.start();
-				loop();
-			} else cancelAnimationFrame(raf);
-		};
-
-		window.addEventListener("resize", onResize);
-		document.addEventListener("visibilitychange", onVisibility);
-		loop();
-
-		return () => {
-			running = false;
-			cancelAnimationFrame(raf);
-			destroySteeringInput();
-			window.removeEventListener("resize", onResize);
-			document.removeEventListener("visibilitychange", onVisibility);
-			geo.dispose();
-			mat.dispose();
-			renderer.dispose();
-			renderer.forceContextLoss();
-			renderer.domElement.remove();
-		};
-	}, [accent, dark]);
+			return {
+				render: (_dt, elapsed) => {
+					mat.uniforms.uTime.value = elapsed;
+					camera.position.x += (pointer.x * 1.2 - camera.position.x) * 0.03;
+					camera.lookAt(0, 0, -2);
+				},
+				dispose: () => {
+					geo.dispose();
+					mat.dispose();
+				},
+			};
+		},
+	});
 
 	return (
 		<div
