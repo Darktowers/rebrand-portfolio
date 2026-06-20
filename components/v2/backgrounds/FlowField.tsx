@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
-import { createSteeringInput } from "./steeringInput";
+import { useThreeScene } from "./useThreeScene";
 
 type Props = { accent: string; dark: boolean };
 
@@ -31,136 +31,80 @@ const frag = /* glsl */ `
 export default function FlowField({ accent, dark }: Props) {
 	const mountRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
-		const mount = mountRef.current;
-		if (!mount) return;
-		const reduce = window.matchMedia(
-			"(prefers-reduced-motion: reduce)",
-		).matches;
-
-		let renderer: THREE.WebGLRenderer;
-		try {
-			renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-		} catch {
-			return;
-		}
-		renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-		renderer.setSize(window.innerWidth, window.innerHeight);
-		renderer.setClearColor(0x000000, 0);
-		mount.appendChild(renderer.domElement);
-
-		const scene = new THREE.Scene();
-		const camera = new THREE.PerspectiveCamera(
-			55,
-			window.innerWidth / window.innerHeight,
-			0.1,
-			100,
-		);
-		camera.position.set(0, 0, 9);
-
-		const COUNT = 1500;
-		const BOUND = 13;
-		const positions = new Float32Array(COUNT * 3);
-		const seed = new Float32Array(COUNT);
-		const Z_FAR = -16;
-		const Z_NEAR = 7;
-		for (let i = 0; i < COUNT; i++) {
-			positions[3 * i] = (Math.random() - 0.5) * BOUND * 2;
-			positions[3 * i + 1] = (Math.random() - 0.5) * BOUND * 1.3;
-			positions[3 * i + 2] = Z_FAR + Math.random() * (Z_NEAR - Z_FAR);
-			seed[i] = Math.random();
-		}
-		const geo = new THREE.BufferGeometry();
-		geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-		geo.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
-		const mat = new THREE.ShaderMaterial({
-			vertexShader: vert,
-			fragmentShader: frag,
-			uniforms: { uAccent: { value: new THREE.Color(accent) } },
-			transparent: true,
-			blending: dark ? THREE.AdditiveBlending : THREE.NormalBlending,
-			depthWrite: false,
-		});
-		const points = new THREE.Points(geo, mat);
-		scene.add(points);
-
-		const clock = new THREE.Clock();
-		const pointer = new THREE.Vector2(0, 0);
-		const slow = reduce ? 0.5 : 1;
-		let raf = 0;
-		let running = true;
-
-		const advect = (dt: number, t: number) => {
+	useThreeScene(mountRef, {
+		camera: { fov: 55, position: [0, 0, 9] },
+		dependencies: [accent, dark],
+		setup: ({ scene, camera, pointer, reduce }) => {
+			const COUNT = 1500;
+			const BOUND = 13;
+			const positions = new Float32Array(COUNT * 3);
+			const seed = new Float32Array(COUNT);
+			const Z_FAR = -16;
+			const Z_NEAR = 7;
 			for (let i = 0; i < COUNT; i++) {
-				const x = positions[3 * i];
-				const y = positions[3 * i + 1];
-				// cheap curl-ish flow field
-				const ang =
-					(Math.sin(x * 0.32 + t * 0.18) + Math.cos(y * 0.34 - t * 0.14)) *
-					Math.PI;
-				const sp = (0.3 + seed[i] * 0.5) * dt * slow;
-				positions[3 * i] += Math.cos(ang) * sp;
-				positions[3 * i + 1] += Math.sin(ang) * sp;
-				// forward travel toward camera → flythrough feel
-				positions[3 * i + 2] += (3.0 + seed[i] * 5.0) * dt * slow;
-				if (positions[3 * i + 2] > Z_NEAR) {
-					positions[3 * i] = (Math.random() - 0.5) * BOUND * 2;
-					positions[3 * i + 1] = (Math.random() - 0.5) * BOUND * 1.3;
-					positions[3 * i + 2] = Z_FAR;
-				}
-				// wrap
-				if (positions[3 * i] > BOUND) positions[3 * i] = -BOUND;
-				if (positions[3 * i] < -BOUND) positions[3 * i] = BOUND;
-				if (positions[3 * i + 1] > BOUND) positions[3 * i + 1] = -BOUND;
-				if (positions[3 * i + 1] < -BOUND) positions[3 * i + 1] = BOUND;
+				positions[3 * i] = (Math.random() - 0.5) * BOUND * 2;
+				positions[3 * i + 1] = (Math.random() - 0.5) * BOUND * 1.3;
+				positions[3 * i + 2] = Z_FAR + Math.random() * (Z_NEAR - Z_FAR);
+				seed[i] = Math.random();
 			}
-			geo.attributes.position.needsUpdate = true;
-		};
-		advect(0, 0);
+			const geo = new THREE.BufferGeometry();
+			geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+			geo.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
+			const mat = new THREE.ShaderMaterial({
+				vertexShader: vert,
+				fragmentShader: frag,
+				uniforms: { uAccent: { value: new THREE.Color(accent) } },
+				transparent: true,
+				blending: dark ? THREE.AdditiveBlending : THREE.NormalBlending,
+				depthWrite: false,
+			});
+			const points = new THREE.Points(geo, mat);
+			scene.add(points);
 
-		const destroySteeringInput = createSteeringInput(pointer, {
-			enableOrientation: !reduce,
-		});
-		const onResize = () => {
-			camera.aspect = window.innerWidth / window.innerHeight;
-			camera.updateProjectionMatrix();
-			renderer.setSize(window.innerWidth, window.innerHeight);
-		};
-		const loop = () => {
-			if (!running) return;
-			raf = requestAnimationFrame(loop);
-			const dt = Math.min(clock.getDelta(), 0.05);
-			advect(dt, clock.elapsedTime);
-			camera.position.x += (pointer.x * 0.8 - camera.position.x) * 0.03;
-			camera.position.y += (-pointer.y * 0.5 - camera.position.y) * 0.03;
-			camera.lookAt(0, 0, 0);
-			renderer.render(scene, camera);
-		};
-		const onVisibility = () => {
-			running = !document.hidden;
-			if (running) {
-				clock.start();
-				loop();
-			} else cancelAnimationFrame(raf);
-		};
+			const slow = reduce ? 0.5 : 1;
 
-		window.addEventListener("resize", onResize);
-		document.addEventListener("visibilitychange", onVisibility);
-		loop();
+			const advect = (dt: number, t: number) => {
+				for (let i = 0; i < COUNT; i++) {
+					const x = positions[3 * i];
+					const y = positions[3 * i + 1];
+					// cheap curl-ish flow field
+					const ang =
+						(Math.sin(x * 0.32 + t * 0.18) + Math.cos(y * 0.34 - t * 0.14)) *
+						Math.PI;
+					const sp = (0.3 + seed[i] * 0.5) * dt * slow;
+					positions[3 * i] += Math.cos(ang) * sp;
+					positions[3 * i + 1] += Math.sin(ang) * sp;
+					// forward travel toward camera → flythrough feel
+					positions[3 * i + 2] += (3.0 + seed[i] * 5.0) * dt * slow;
+					if (positions[3 * i + 2] > Z_NEAR) {
+						positions[3 * i] = (Math.random() - 0.5) * BOUND * 2;
+						positions[3 * i + 1] = (Math.random() - 0.5) * BOUND * 1.3;
+						positions[3 * i + 2] = Z_FAR;
+					}
+					// wrap
+					if (positions[3 * i] > BOUND) positions[3 * i] = -BOUND;
+					if (positions[3 * i] < -BOUND) positions[3 * i] = BOUND;
+					if (positions[3 * i + 1] > BOUND) positions[3 * i + 1] = -BOUND;
+					if (positions[3 * i + 1] < -BOUND) positions[3 * i + 1] = BOUND;
+				}
+				geo.attributes.position.needsUpdate = true;
+			};
+			advect(0, 0);
 
-		return () => {
-			running = false;
-			cancelAnimationFrame(raf);
-			destroySteeringInput();
-			window.removeEventListener("resize", onResize);
-			document.removeEventListener("visibilitychange", onVisibility);
-			geo.dispose();
-			mat.dispose();
-			renderer.dispose();
-			renderer.forceContextLoss();
-			renderer.domElement.remove();
-		};
-	}, [accent, dark]);
+			return {
+				render: (dt, elapsed) => {
+					advect(dt, elapsed);
+					camera.position.x += (pointer.x * 0.8 - camera.position.x) * 0.03;
+					camera.position.y += (-pointer.y * 0.5 - camera.position.y) * 0.03;
+					camera.lookAt(0, 0, 0);
+				},
+				dispose: () => {
+					geo.dispose();
+					mat.dispose();
+				},
+			};
+		},
+	});
 
 	return (
 		<div

@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
-import { createSteeringInput } from "./steeringInput";
+import { useThreeScene } from "./useThreeScene";
 
 type Props = { accent: string; dark: boolean };
 
@@ -100,332 +100,273 @@ const pointFrag = /* glsl */ `
 export default function BlackHole({ accent, dark }: Props) {
 	const mountRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
-		const mount = mountRef.current;
-		if (!mount) return;
+	useThreeScene(mountRef, {
+		camera: { fov: 45, position: [0, 0, 10] },
+		renderer: { powerPreference: "high-performance" },
+		dependencies: [accent, dark],
+		setup: ({ scene, camera, pointer, reduce }) => {
+			const accentColor = new THREE.Color(accent);
+			const hotColor = dark
+				? new THREE.Color("#ff4d6a")
+				: new THREE.Color("#ff7095");
+			// Disk/ring use normal blending so rose stays rose (additive clips
+			// to white). Particles stay additive for sparkle.
+			const diskBlending = THREE.NormalBlending;
+			const pointsBlending = dark
+				? THREE.AdditiveBlending
+				: THREE.NormalBlending;
+			const intensity = dark ? 0.95 : 0.85;
 
-		const reduce = window.matchMedia(
-			"(prefers-reduced-motion: reduce)",
-		).matches;
+			// Tilted system group → flat ring reads as an ellipse with an open
+			// dark core (the event horizon). Offset upper-right to keep the
+			// left-aligned hero legible.
+			const group = new THREE.Group();
+			// Orientation: angled, near edge-on with a roll → reads as a disk in
+			// 3D space rather than a flat ring.
+			group.rotation.x = -0.8;
+			group.rotation.z = 0.4;
+			group.position.set(2.4, 1.4, 0);
+			scene.add(group);
 
-		let renderer: THREE.WebGLRenderer;
-		try {
-			renderer = new THREE.WebGLRenderer({
-				alpha: true,
-				antialias: true,
-				powerPreference: "high-performance",
+			// Event horizon (opaque, occludes particles behind it)
+			const horizon = new THREE.Mesh(
+				new THREE.SphereGeometry(0.92, 48, 48),
+				new THREE.MeshBasicMaterial({
+					color: dark ? 0x000000 : 0x140f1a,
+				}),
+			);
+			group.add(horizon);
+
+			// Accretion disk
+			const diskGeo = new THREE.RingGeometry(1.3, 2.6, 160, 1);
+			const diskMat = new THREE.ShaderMaterial({
+				vertexShader: diskVert,
+				fragmentShader: diskFrag,
+				uniforms: {
+					uTime: { value: 0 },
+					uIntensity: { value: intensity },
+					uInner: { value: 1.3 },
+					uOuter: { value: 2.6 },
+					uColorHot: { value: hotColor },
+					uColorCool: { value: accentColor },
+				},
+				transparent: true,
+				blending: diskBlending,
+				depthWrite: false,
+				side: THREE.DoubleSide,
 			});
-		} catch {
-			return;
-		}
-		renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-		renderer.setSize(window.innerWidth, window.innerHeight);
-		renderer.setClearColor(0x000000, 0);
-		mount.appendChild(renderer.domElement);
+			const disk = new THREE.Mesh(diskGeo, diskMat);
+			group.add(disk);
 
-		const scene = new THREE.Scene();
-		const camera = new THREE.PerspectiveCamera(
-			45,
-			window.innerWidth / window.innerHeight,
-			0.1,
-			100,
-		);
-		camera.position.set(0, 0, 10);
+			// Particle infall
+			const COUNT = 450;
+			const positions = new Float32Array(COUNT * 3);
+			const angle = new Float32Array(COUNT);
+			const radius = new Float32Array(COUNT);
+			const speed = new Float32Array(COUNT);
+			const seed = new Float32Array(COUNT);
+			const R_SPAWN = 3.2;
+			const R_DEATH = 0.95;
+			const spawn = (i: number) => {
+				angle[i] = Math.random() * Math.PI * 2;
+				radius[i] = R_DEATH + Math.random() * (R_SPAWN - R_DEATH);
+				speed[i] = 0.15 + Math.random() * 0.25;
+				seed[i] = Math.random();
+			};
+			for (let i = 0; i < COUNT; i++) spawn(i);
+			const pointsGeo = new THREE.BufferGeometry();
+			pointsGeo.setAttribute(
+				"position",
+				new THREE.BufferAttribute(positions, 3),
+			);
+			pointsGeo.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
+			const pointsMat = new THREE.ShaderMaterial({
+				vertexShader: pointVert,
+				fragmentShader: pointFrag,
+				uniforms: { uAccent: { value: accentColor } },
+				transparent: true,
+				blending: pointsBlending,
+				depthWrite: false,
+				depthTest: false,
+			});
+			const points = new THREE.Points(pointsGeo, pointsMat);
+			group.add(points);
 
-		const accentColor = new THREE.Color(accent);
-		const hotColor = dark
-			? new THREE.Color("#ff4d6a")
-			: new THREE.Color("#ff7095");
-		// Disk/ring use normal blending so rose stays rose (additive clips
-		// to white). Particles stay additive for sparkle.
-		const diskBlending = THREE.NormalBlending;
-		const pointsBlending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
-		const intensity = dark ? 0.95 : 0.85;
+			let steerX = 0;
+			let steerY = 0;
+			const pixelTexture = createPixelTexture();
 
-		// Tilted system group → flat ring reads as an ellipse with an open
-		// dark core (the event horizon). Offset upper-right to keep the
-		// left-aligned hero legible.
-		const group = new THREE.Group();
-		// Orientation: angled, near edge-on with a roll → reads as a disk in
-		// 3D space rather than a flat ring.
-		group.rotation.x = -0.8;
-		group.rotation.z = 0.4;
-		group.position.set(2.4, 1.4, 0);
-		scene.add(group);
-
-		// Event horizon (opaque, occludes particles behind it)
-		const horizon = new THREE.Mesh(
-			new THREE.SphereGeometry(0.92, 48, 48),
-			new THREE.MeshBasicMaterial({
-				color: dark ? 0x000000 : 0x140f1a,
-			}),
-		);
-		group.add(horizon);
-
-		// Accretion disk
-		const diskGeo = new THREE.RingGeometry(1.3, 2.6, 160, 1);
-		const diskMat = new THREE.ShaderMaterial({
-			vertexShader: diskVert,
-			fragmentShader: diskFrag,
-			uniforms: {
-				uTime: { value: 0 },
-				uIntensity: { value: intensity },
-				uInner: { value: 1.3 },
-				uOuter: { value: 2.6 },
-				uColorHot: { value: hotColor },
-				uColorCool: { value: accentColor },
-			},
-			transparent: true,
-			blending: diskBlending,
-			depthWrite: false,
-			side: THREE.DoubleSide,
-		});
-		const disk = new THREE.Mesh(diskGeo, diskMat);
-		group.add(disk);
-
-		// Particle infall
-		const COUNT = 450;
-		const positions = new Float32Array(COUNT * 3);
-		const angle = new Float32Array(COUNT);
-		const radius = new Float32Array(COUNT);
-		const speed = new Float32Array(COUNT);
-		const seed = new Float32Array(COUNT);
-		const R_SPAWN = 3.2;
-		const R_DEATH = 0.95;
-		const spawn = (i: number) => {
-			angle[i] = Math.random() * Math.PI * 2;
-			radius[i] = R_DEATH + Math.random() * (R_SPAWN - R_DEATH);
-			speed[i] = 0.15 + Math.random() * 0.25;
-			seed[i] = Math.random();
-		};
-		for (let i = 0; i < COUNT; i++) spawn(i);
-		const pointsGeo = new THREE.BufferGeometry();
-		pointsGeo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-		pointsGeo.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
-		const pointsMat = new THREE.ShaderMaterial({
-			vertexShader: pointVert,
-			fragmentShader: pointFrag,
-			uniforms: { uAccent: { value: accentColor } },
-			transparent: true,
-			blending: pointsBlending,
-			depthWrite: false,
-			depthTest: false,
-		});
-		const points = new THREE.Points(pointsGeo, pointsMat);
-		group.add(points);
-
-		let steerX = 0;
-		let steerY = 0;
-		const pixelTexture = createPixelTexture();
-
-		// ── Warp starfield (v0 handling) ──
-		// Depth-graded frustum: far stars cluster near the axis, near stars
-		// spread wide → proper warp-tunnel perspective. Vertex-colored soft
-		// sprites stream down -z toward the camera. The hole is a separate
-		// object you fly past, NOT the source of the stars.
-		const starBright = new THREE.Color(dark ? "#ffe7ee" : "#f43f5e");
-		const starAccent2 = new THREE.Color(dark ? "#ff9bb3" : "#be123c");
-		const starCount = dark ? 1700 : 1000;
-		const starGeometry = new THREE.BufferGeometry();
-		const starPositions = new Float32Array(starCount * 3);
-		const starColors = new Float32Array(starCount * 3);
-		const starSpeeds = new Float32Array(starCount);
-		for (let i = 0; i < starCount; i++) {
-			const depth = Math.random();
-			const spread = 2.4 + depth * 30;
-			starPositions[i * 3] = (Math.random() - 0.5) * spread;
-			starPositions[i * 3 + 1] = (Math.random() - 0.5) * spread * 0.66;
-			starPositions[i * 3 + 2] = -Math.random() * 120 - 4;
-			starSpeeds[i] = Math.random() * 0.4 + 0.28;
-			const c =
-				Math.random() > 0.86
-					? starBright
-					: Math.random() > 0.52
-						? starAccent2
-						: accentColor;
-			starColors[i * 3] = c.r;
-			starColors[i * 3 + 1] = c.g;
-			starColors[i * 3 + 2] = c.b;
-		}
-		starGeometry.setAttribute(
-			"position",
-			new THREE.BufferAttribute(starPositions, 3),
-		);
-		starGeometry.setAttribute(
-			"color",
-			new THREE.BufferAttribute(starColors, 3),
-		);
-		const starMaterial = new THREE.PointsMaterial({
-			map: pixelTexture,
-			size: 0.12,
-			sizeAttenuation: true,
-			vertexColors: true,
-			transparent: true,
-			opacity: dark ? 0.9 : 0.6,
-			alphaTest: 0.06,
-			blending: pointsBlending,
-			depthWrite: false,
-		});
-		const stars = new THREE.Points(starGeometry, starMaterial);
-		scene.add(stars);
-
-		// ── Warp streaks (v0 handling) ── tails ∝ speed × warp, stream down -z.
-		const streakCount = dark ? 320 : 180;
-		const streakSeeds = Array.from({ length: streakCount }, () => ({
-			x: (Math.random() - 0.5) * 24,
-			y: (Math.random() - 0.5) * 14,
-			z: -Math.random() * 100 - 3,
-			speed: Math.random() * 0.5 + 0.4,
-		}));
-		const streakPositions = new Float32Array(streakCount * 6);
-		const streakGeometry = new THREE.BufferGeometry();
-		streakGeometry.setAttribute(
-			"position",
-			new THREE.BufferAttribute(streakPositions, 3),
-		);
-		const streakMaterial = new THREE.LineBasicMaterial({
-			color: new THREE.Color(dark ? "#ff6a86" : accent),
-			transparent: true,
-			opacity: dark ? 0.4 : 0.28,
-			blending: pointsBlending,
-			depthWrite: false,
-		});
-		const streaks = new THREE.LineSegments(streakGeometry, streakMaterial);
-		scene.add(streaks);
-
-		const updateParticles = (dt: number, slow: number) => {
-			for (let i = 0; i < COUNT; i++) {
-				radius[i] -= speed[i] * dt * slow * (0.4 + 0.9 / radius[i]);
-				angle[i] += dt * slow * (0.6 + 1.8 / radius[i]);
-				if (radius[i] <= R_DEATH) spawn(i);
-				const r = radius[i];
-				positions[3 * i] = Math.cos(angle[i]) * r;
-				positions[3 * i + 1] = Math.sin(angle[i]) * r;
-				positions[3 * i + 2] = (seed[i] - 0.5) * 0.12;
-			}
-			pointsGeo.attributes.position.needsUpdate = true;
-		};
-		updateParticles(0, 1); // seed initial positions
-
-		const clock = new THREE.Clock();
-		const pointer = new THREE.Vector2(0, 0);
-		// Reduced motion → gentle drift, not a full freeze (matches v0 feel).
-		const slow = reduce ? 0.5 : 1;
-		let raf = 0;
-		let running = true;
-
-		const destroySteeringInput = createSteeringInput(pointer, {
-			enableOrientation: !reduce,
-		});
-		const onResize = () => {
-			camera.aspect = window.innerWidth / window.innerHeight;
-			camera.updateProjectionMatrix();
-			renderer.setSize(window.innerWidth, window.innerHeight);
-		};
-		const loop = () => {
-			if (!running) return;
-			raf = requestAnimationFrame(loop);
-			const dt = Math.min(clock.getDelta(), 0.05);
-			const t = clock.elapsedTime;
-			// Hole churns very slowly; it is a distant destination.
-			diskMat.uniforms.uTime.value = t * 0.18;
-			// Game-like piloting: cursor steers + accelerates the warp (v0 feel).
-			steerX += (pointer.x - steerX) * 0.04;
-			steerY += (pointer.y - steerY) * 0.04;
-			const warp =
-				slow * (1.15 + Math.abs(steerX) * 0.5 + Math.abs(steerY) * 0.22);
-
-			// Stars stream down the tunnel toward the camera (v0 handling).
-			const sp = starGeometry.attributes.position.array as Float32Array;
+			// ── Warp starfield (v0 handling) ──
+			// Depth-graded frustum: far stars cluster near the axis, near stars
+			// spread wide → proper warp-tunnel perspective. Vertex-colored soft
+			// sprites stream down -z toward the camera. The hole is a separate
+			// object you fly past, NOT the source of the stars.
+			const starBright = new THREE.Color(dark ? "#ffe7ee" : "#f43f5e");
+			const starAccent2 = new THREE.Color(dark ? "#ff9bb3" : "#be123c");
+			const starCount = dark ? 1700 : 1000;
+			const starGeometry = new THREE.BufferGeometry();
+			const starPositions = new Float32Array(starCount * 3);
+			const starColors = new Float32Array(starCount * 3);
+			const starSpeeds = new Float32Array(starCount);
 			for (let i = 0; i < starCount; i++) {
-				const zi = i * 3 + 2;
-				sp[zi] += starSpeeds[i] * warp;
-				sp[i * 3] += steerX * 0.014;
-				sp[i * 3 + 1] -= steerY * 0.012;
-				if (sp[zi] > 11) {
-					const depth = Math.random();
-					const spread = 2.4 + depth * 30;
-					sp[i * 3] = (Math.random() - 0.5) * spread;
-					sp[i * 3 + 1] = (Math.random() - 0.5) * spread * 0.66;
-					sp[zi] = -120;
+				const depth = Math.random();
+				const spread = 2.4 + depth * 30;
+				starPositions[i * 3] = (Math.random() - 0.5) * spread;
+				starPositions[i * 3 + 1] = (Math.random() - 0.5) * spread * 0.66;
+				starPositions[i * 3 + 2] = -Math.random() * 120 - 4;
+				starSpeeds[i] = Math.random() * 0.4 + 0.28;
+				const c =
+					Math.random() > 0.86
+						? starBright
+						: Math.random() > 0.52
+							? starAccent2
+							: accentColor;
+				starColors[i * 3] = c.r;
+				starColors[i * 3 + 1] = c.g;
+				starColors[i * 3 + 2] = c.b;
+			}
+			starGeometry.setAttribute(
+				"position",
+				new THREE.BufferAttribute(starPositions, 3),
+			);
+			starGeometry.setAttribute(
+				"color",
+				new THREE.BufferAttribute(starColors, 3),
+			);
+			const starMaterial = new THREE.PointsMaterial({
+				map: pixelTexture,
+				size: 0.12,
+				sizeAttenuation: true,
+				vertexColors: true,
+				transparent: true,
+				opacity: dark ? 0.9 : 0.6,
+				alphaTest: 0.06,
+				blending: pointsBlending,
+				depthWrite: false,
+			});
+			const stars = new THREE.Points(starGeometry, starMaterial);
+			scene.add(stars);
+
+			// ── Warp streaks (v0 handling) ── tails ∝ speed × warp, stream down -z.
+			const streakCount = dark ? 320 : 180;
+			const streakSeeds = Array.from({ length: streakCount }, () => ({
+				x: (Math.random() - 0.5) * 24,
+				y: (Math.random() - 0.5) * 14,
+				z: -Math.random() * 100 - 3,
+				speed: Math.random() * 0.5 + 0.4,
+			}));
+			const streakPositions = new Float32Array(streakCount * 6);
+			const streakGeometry = new THREE.BufferGeometry();
+			streakGeometry.setAttribute(
+				"position",
+				new THREE.BufferAttribute(streakPositions, 3),
+			);
+			const streakMaterial = new THREE.LineBasicMaterial({
+				color: new THREE.Color(dark ? "#ff6a86" : accent),
+				transparent: true,
+				opacity: dark ? 0.4 : 0.28,
+				blending: pointsBlending,
+				depthWrite: false,
+			});
+			const streaks = new THREE.LineSegments(streakGeometry, streakMaterial);
+			scene.add(streaks);
+
+			const updateParticles = (dt: number, slow: number) => {
+				for (let i = 0; i < COUNT; i++) {
+					radius[i] -= speed[i] * dt * slow * (0.4 + 0.9 / radius[i]);
+					angle[i] += dt * slow * (0.6 + 1.8 / radius[i]);
+					if (radius[i] <= R_DEATH) spawn(i);
+					const r = radius[i];
+					positions[3 * i] = Math.cos(angle[i]) * r;
+					positions[3 * i + 1] = Math.sin(angle[i]) * r;
+					positions[3 * i + 2] = (seed[i] - 0.5) * 0.12;
 				}
-			}
-			starGeometry.attributes.position.needsUpdate = true;
+				pointsGeo.attributes.position.needsUpdate = true;
+			};
+			updateParticles(0, 1); // seed initial positions
 
-			// Streaks with tails ∝ speed × warp (v0 handling).
-			for (let i = 0; i < streakCount; i++) {
-				const s = streakSeeds[i];
-				s.z += s.speed * warp;
-				s.x += steerX * 0.034;
-				s.y -= steerY * 0.02;
-				if (s.z > 11) {
-					s.x = (Math.random() - 0.5) * 24;
-					s.y = (Math.random() - 0.5) * 14;
-					s.z = -100;
-					s.speed = Math.random() * 0.5 + 0.4;
-				}
-				const tail = 2.4 + s.speed * 5.8 * warp;
-				const k = i * 6;
-				streakPositions[k] = s.x;
-				streakPositions[k + 1] = s.y;
-				streakPositions[k + 2] = s.z;
-				streakPositions[k + 3] = s.x - steerX * 0.28;
-				streakPositions[k + 4] = s.y + steerY * 0.18;
-				streakPositions[k + 5] = s.z - tail;
-			}
-			streakGeometry.attributes.position.needsUpdate = true;
+			// Reduced motion → gentle drift, not a full freeze (matches v0 feel).
+			const slow = reduce ? 0.5 : 1;
+			return {
+				render: (dt, elapsed) => {
+					// Hole churns very slowly; it is a distant destination.
+					diskMat.uniforms.uTime.value = elapsed * 0.18;
+					// Game-like piloting: cursor steers + accelerates the warp (v0 feel).
+					steerX += (pointer.x - steerX) * 0.04;
+					steerY += (pointer.y - steerY) * 0.04;
+					const warp =
+						slow * (1.15 + Math.abs(steerX) * 0.5 + Math.abs(steerY) * 0.22);
 
-			// Fake an approach over a massive time/distance: the hole eases
-			// closer asymptotically (gets bigger, but never arrives). Starts
-			// small. Everything about the hole stays very slow.
-			const approach = 0.74 * (1 + 0.26 * (1 - Math.exp(-t / 240)));
-			group.scale.setScalar(approach);
-			group.rotation.z += dt * slow * 0.005;
-			updateParticles(dt, slow * 0.6);
+					// Stars stream down the tunnel toward the camera (v0 handling).
+					const sp = starGeometry.attributes.position.array as Float32Array;
+					for (let i = 0; i < starCount; i++) {
+						const zi = i * 3 + 2;
+						sp[zi] += starSpeeds[i] * warp;
+						sp[i * 3] += steerX * 0.014;
+						sp[i * 3 + 1] -= steerY * 0.012;
+						if (sp[zi] > 11) {
+							const depth = Math.random();
+							const spread = 2.4 + depth * 30;
+							sp[i * 3] = (Math.random() - 0.5) * spread;
+							sp[i * 3 + 1] = (Math.random() - 0.5) * spread * 0.66;
+							sp[zi] = -120;
+						}
+					}
+					starGeometry.attributes.position.needsUpdate = true;
 
-			const roll = -steerX * 0.1;
-			camera.up.set(Math.sin(roll), Math.cos(roll), 0);
-			camera.position.x += (steerX * 0.8 - camera.position.x) * 0.04;
-			camera.position.y += (-steerY * 0.56 - camera.position.y) * 0.04;
-			camera.lookAt(steerX * 1.8, -steerY * 1.1, -22);
-			renderer.render(scene, camera);
-		};
-		const onVisibility = () => {
-			running = !document.hidden;
-			if (running) {
-				clock.start();
-				loop();
-			} else {
-				cancelAnimationFrame(raf);
-			}
-		};
+					// Streaks with tails ∝ speed × warp (v0 handling).
+					for (let i = 0; i < streakCount; i++) {
+						const s = streakSeeds[i];
+						s.z += s.speed * warp;
+						s.x += steerX * 0.034;
+						s.y -= steerY * 0.02;
+						if (s.z > 11) {
+							s.x = (Math.random() - 0.5) * 24;
+							s.y = (Math.random() - 0.5) * 14;
+							s.z = -100;
+							s.speed = Math.random() * 0.5 + 0.4;
+						}
+						const tail = 2.4 + s.speed * 5.8 * warp;
+						const k = i * 6;
+						streakPositions[k] = s.x;
+						streakPositions[k + 1] = s.y;
+						streakPositions[k + 2] = s.z;
+						streakPositions[k + 3] = s.x - steerX * 0.28;
+						streakPositions[k + 4] = s.y + steerY * 0.18;
+						streakPositions[k + 5] = s.z - tail;
+					}
+					streakGeometry.attributes.position.needsUpdate = true;
 
-		window.addEventListener("resize", onResize);
-		document.addEventListener("visibilitychange", onVisibility);
-		loop();
+					// Fake an approach over a massive time/distance: the hole eases
+					// closer asymptotically (gets bigger, but never arrives). Starts
+					// small. Everything about the hole stays very slow.
+					const approach = 0.74 * (1 + 0.26 * (1 - Math.exp(-elapsed / 240)));
+					group.scale.setScalar(approach);
+					group.rotation.z += dt * slow * 0.005;
+					updateParticles(dt, slow * 0.6);
 
-		return () => {
-			running = false;
-			cancelAnimationFrame(raf);
-			destroySteeringInput();
-			window.removeEventListener("resize", onResize);
-			document.removeEventListener("visibilitychange", onVisibility);
-			horizon.geometry.dispose();
-			(horizon.material as THREE.Material).dispose();
-			diskGeo.dispose();
-			diskMat.dispose();
-			pointsGeo.dispose();
-			pointsMat.dispose();
-			starGeometry.dispose();
-			starMaterial.dispose();
-			pixelTexture.dispose();
-			streakGeometry.dispose();
-			streakMaterial.dispose();
-			renderer.dispose();
-			renderer.forceContextLoss();
-			renderer.domElement.remove();
-		};
-	}, [accent, dark]);
+					const roll = -steerX * 0.1;
+					camera.up.set(Math.sin(roll), Math.cos(roll), 0);
+					camera.position.x += (steerX * 0.8 - camera.position.x) * 0.04;
+					camera.position.y += (-steerY * 0.56 - camera.position.y) * 0.04;
+					camera.lookAt(steerX * 1.8, -steerY * 1.1, -22);
+				},
+				dispose: () => {
+					horizon.geometry.dispose();
+					(horizon.material as THREE.Material).dispose();
+					diskGeo.dispose();
+					diskMat.dispose();
+					pointsGeo.dispose();
+					pointsMat.dispose();
+					starGeometry.dispose();
+					starMaterial.dispose();
+					pixelTexture.dispose();
+					streakGeometry.dispose();
+					streakMaterial.dispose();
+				},
+			};
+		},
+	});
 
 	return (
 		<div
