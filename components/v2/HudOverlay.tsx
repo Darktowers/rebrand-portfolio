@@ -27,6 +27,9 @@ export default function HudOverlay() {
 	const timeRef = useRef<HTMLSpanElement>(null);
 	const distRef = useRef<HTMLSpanElement>(null);
 	const lockRef = useRef<HTMLSpanElement>(null);
+	const sensorRowRef = useRef<HTMLDivElement>(null);
+	const sensorXRef = useRef<HTMLSpanElement>(null);
+	const sensorYRef = useRef<HTMLSpanElement>(null);
 
 	useEffect(() => {
 		const reduce = window.matchMedia(
@@ -35,11 +38,17 @@ export default function HudOverlay() {
 		const input = { x: 0, y: 0 };
 		let sx = 0;
 		let sy = 0;
+		const sensor = { active: false, x: 0, y: 0 };
 		const start = performance.now();
 		let raf = 0;
 
 		const destroySteeringInput = createSteeringInput(input, {
 			enableOrientation: !reduce,
+			onDeviceInput: ({ x, y }) => {
+				sensor.active = true;
+				sensor.x = x;
+				sensor.y = y;
+			},
 		});
 
 		const pad = (n: number) => String(Math.floor(n)).padStart(2, "0");
@@ -76,6 +85,15 @@ export default function HudOverlay() {
 				const approach = 1 - Math.exp(-elapsed / 240);
 				const n = Math.round(approach * 12);
 				lockRef.current.textContent = "█".repeat(n) + "░".repeat(12 - n);
+			}
+			if (sensorRowRef.current) {
+				sensorRowRef.current.style.display = sensor.active ? "flex" : "none";
+			}
+			if (sensorXRef.current) {
+				sensorXRef.current.textContent = sensor.x.toFixed(2);
+			}
+			if (sensorYRef.current) {
+				sensorYRef.current.textContent = sensor.y.toFixed(2);
 			}
 		};
 		raf = requestAnimationFrame(tick);
@@ -156,6 +174,18 @@ export default function HudOverlay() {
 					<span style={{ color: "var(--accent)" }}>{t("hud.dist")}</span>
 					<span style={{ color: "var(--fg)" }}>
 						<span ref={distRef}>4.2371</span> {t("hud.unit_dist")}
+					</span>
+				</div>
+				<div
+					ref={sensorRowRef}
+					className="items-center justify-between gap-4"
+					style={{ display: "none" }}
+				>
+					<span style={{ color: "var(--accent)" }}>X/Y</span>
+					<span style={{ color: "var(--fg)" }}>
+						<span ref={sensorXRef}>0.00</span>
+						<span className="mx-1 opacity-50">/</span>
+						<span ref={sensorYRef}>0.00</span>
 					</span>
 				</div>
 				<div className="hidden items-center justify-between gap-4 sm:flex">

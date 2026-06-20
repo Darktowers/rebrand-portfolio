@@ -17,6 +17,11 @@ type Options = {
 	enableOrientation?: boolean;
 	tiltXDivisor?: number;
 	tiltYDivisor?: number;
+	onDeviceInput?: (input: {
+		source: "motion" | "orientation";
+		x: number;
+		y: number;
+	}) => void;
 };
 
 let orientationPermissionGranted = false;
@@ -65,6 +70,7 @@ export function createSteeringInput(
 		enableOrientation = true,
 		tiltXDivisor = 24,
 		tiltYDivisor = 34,
+		onDeviceInput,
 	}: Options = {},
 ) {
 	const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
@@ -88,6 +94,36 @@ export function createSteeringInput(
 	let motionListening = false;
 	let permissionRequested = false;
 
+	const getViewportAngle = () => {
+		const angle = window.screen.orientation?.angle;
+		if (typeof angle === "number") return angle;
+		const legacyAngle = (window as Window & { orientation?: number })
+			.orientation;
+		return typeof legacyAngle === "number" ? legacyAngle : 0;
+	};
+
+	const toViewportVector = (x: number, y: number) => {
+		const radians = (-getViewportAngle() * Math.PI) / 180;
+		const cos = Math.cos(radians);
+		const sin = Math.sin(radians);
+
+		return {
+			x: clamp(x * cos - y * sin, -1, 1),
+			y: clamp(x * sin + y * cos, -1, 1),
+		};
+	};
+
+	const setDeviceInput = (
+		source: "motion" | "orientation",
+		x: number,
+		y: number,
+	) => {
+		const input = toViewportVector(x, y);
+		target.x = input.x;
+		target.y = input.y;
+		onDeviceInput?.({ source, x: input.x, y: input.y });
+	};
+
 	const onPointerMove = (event: PointerEvent) => {
 		target.x = (event.clientX / window.innerWidth) * 2 - 1;
 		target.y = (event.clientY / window.innerHeight) * 2 - 1;
@@ -100,8 +136,11 @@ export function createSteeringInput(
 		baselineBeta ??= event.beta;
 		baselineGamma ??= event.gamma;
 
-		target.x = clamp((event.gamma - baselineGamma) / tiltXDivisor, -1, 1);
-		target.y = clamp((event.beta - baselineBeta) / tiltYDivisor, -1, 1);
+		setDeviceInput(
+			"orientation",
+			(event.gamma - baselineGamma) / tiltXDivisor,
+			(event.beta - baselineBeta) / tiltYDivisor,
+		);
 	};
 
 	const onMotion = (event: DeviceMotionEvent) => {
@@ -113,8 +152,11 @@ export function createSteeringInput(
 		baselineMotionX ??= acceleration.x;
 		baselineMotionY ??= acceleration.y;
 
-		target.x = clamp((acceleration.x - baselineMotionX) / 5, -1, 1);
-		target.y = clamp((acceleration.y - baselineMotionY) / 7, -1, 1);
+		setDeviceInput(
+			"motion",
+			(acceleration.x - baselineMotionX) / 5,
+			(acceleration.y - baselineMotionY) / 7,
+		);
 	};
 
 	const addOrientationListener = () => {
