@@ -1,10 +1,12 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import { useBackground } from "../BackgroundContext";
-import BlackHole from "./BlackHole";
-import FlowField from "./FlowField";
-import IsoTerrain from "./IsoTerrain";
+
+const BlackHole = dynamic(() => import("./BlackHole"), { ssr: false });
+const FlowField = dynamic(() => import("./FlowField"), { ssr: false });
+const IsoTerrain = dynamic(() => import("./IsoTerrain"), { ssr: false });
 
 /** Global background scene. Version is shared via BackgroundContext so the
  *  home-only picker can drive it. */

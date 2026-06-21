@@ -1,13 +1,5 @@
-import Hero from "../components/sections/Hero";
-import BackgroundPicker from "../components/v2/backgrounds/BackgroundPicker";
-import HudOverlay from "../components/v2/HudOverlay";
+import HomeExperience from "../components/v2/HomeExperience";
 
 export default function Home() {
-	return (
-		<>
-			<BackgroundPicker />
-			<HudOverlay />
-			<Hero />
-		</>
-	);
+	return <HomeExperience />;
 }

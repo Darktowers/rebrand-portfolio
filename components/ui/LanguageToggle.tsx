@@ -1,15 +1,24 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 
 export default function LanguageToggle() {
 	const { lang, setLang } = useLanguage();
+	const router = useRouter();
+	const [, startTransition] = useTransition();
 	const isEN = lang === "en";
+	const nextLang = isEN ? "es" : "en";
 
 	return (
 		<button
-			onClick={() => setLang(isEN ? "es" : "en")}
+			onClick={() => {
+				void setLang(nextLang).then(() => {
+					startTransition(() => router.refresh());
+				});
+			}}
 			className="focus-ring relative flex items-center w-16 h-8 rounded-full cursor-pointer overflow-hidden shrink-0 hover:shadow-[0_0_14px_var(--accent-glow)]"
 			style={{
 				background: "var(--bg-secondary)",

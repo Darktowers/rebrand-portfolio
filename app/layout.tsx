@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import { ThemeProvider } from "next-themes";
 import Footer from "../components/layout/Footer";
 import Navbar from "../components/layout/Navbar";
-import { BackgroundProvider } from "../components/v2/BackgroundContext";
-import BackgroundScene from "../components/v2/backgrounds/BackgroundScene";
 import { LanguageProvider } from "../context/LanguageContext";
+import {
+	getMetadataForLang,
+	LANGUAGE_COOKIE_NAME,
+	parseLang,
+} from "../context/translation";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,34 +22,44 @@ const geistMono = Geist_Mono({
 	subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-	title: "Cristian Arrieta - React Developer",
-	description:
-		"React Developer & JavaScript Engineer with 8+ years of experience building fast, scalable web applications.",
-	keywords: [
-		"React",
-		"Next.js",
-		"TypeScript",
-		"Frontend Developer",
-		"JavaScript",
-	],
-	authors: [{ name: "Cristian Andres Arrieta Gutierrez" }],
-	openGraph: {
-		title: "Cristian Arrieta - React Developer",
-		description:
-			"React Developer & JavaScript Engineer based in Bogotá, Colombia.",
-		type: "website",
-	},
-};
+async function getServerLang() {
+	const cookieStore = await cookies();
+	return parseLang(cookieStore.get(LANGUAGE_COOKIE_NAME)?.value);
+}
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+	const lang = await getServerLang();
+	const languageMetadata = getMetadataForLang(lang);
+
+	return {
+		title: languageMetadata.title,
+		description: languageMetadata.description,
+		keywords: [
+			"React",
+			"Next.js",
+			"TypeScript",
+			"Frontend Developer",
+			"JavaScript",
+		],
+		authors: [{ name: "Cristian Andres Arrieta Gutierrez" }],
+		openGraph: {
+			title: languageMetadata.title,
+			description: languageMetadata.openGraphDescription,
+			type: "website",
+		},
+	};
+}
+
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const initialLang = await getServerLang();
+
 	return (
 		<html
-			lang="en"
+			lang={initialLang}
 			suppressHydrationWarning
 			className={`${geistSans.variable} ${geistMono.variable}`}
 		>
@@ -56,14 +70,10 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<LanguageProvider>
-						<BackgroundProvider>
-							<BackgroundScene />
-							<div className="v2-hud-grid" aria-hidden="true" />
-							<Navbar />
-							<main className="relative z-10">{children}</main>
-							<Footer />
-						</BackgroundProvider>
+					<LanguageProvider initialLang={initialLang}>
+						<Navbar />
+						<main className="relative z-10">{children}</main>
+						<Footer />
 					</LanguageProvider>
 				</ThemeProvider>
 			</body>
