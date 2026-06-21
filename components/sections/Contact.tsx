@@ -14,6 +14,9 @@ import Dot from "../v2/Dot";
 import GlowButton from "../v2/GlowButton";
 import GlowCard from "../v2/GlowCard";
 import PageHeader from "../v2/PageHeader";
+import { getWhatsAppHref } from "./contactLinks";
+
+const whatsappHref = getWhatsAppHref(profile.whatsapp);
 
 const SOCIALS = [
 	{
@@ -32,14 +35,18 @@ const SOCIALS = [
 		icon: faGithub,
 		download: false,
 	},
-	{
-		key: "whatsapp",
-		labelKey: "contact.whatsapp",
-		handle: "direct message",
-		href: `https://wa.me/${profile.whatsapp.replace(/\D/g, "")}`,
-		icon: faWhatsapp,
-		download: false,
-	},
+	...(whatsappHref
+		? [
+				{
+					key: "whatsapp",
+					labelKey: "contact.whatsapp",
+					handle: "direct message",
+					href: whatsappHref,
+					icon: faWhatsapp,
+					download: false,
+				},
+			]
+		: []),
 	{
 		key: "cv",
 		labelKey: "hero.cta_cv",

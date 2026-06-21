@@ -7,51 +7,71 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import en from "../i18n/en.json";
-import es from "../i18n/es.json";
-
-type Lang = "en" | "es";
-
-const translations: Record<Lang, Record<string, unknown>> = { en, es };
-
-function resolve(obj: Record<string, unknown>, path: string): string {
-	const parts = path.split(".");
-	let current: unknown = obj;
-	for (const part of parts) {
-		if (current == null || typeof current !== "object") return path;
-		current = (current as Record<string, unknown>)[part];
-	}
-	return typeof current === "string" ? current : path;
-}
+import {
+	LANGUAGE_COOKIE_NAME,
+	type Lang,
+	parseLang,
+	resolveTranslation,
+	translations,
+} from "./translation";
 
 interface LanguageContextValue {
 	lang: Lang;
-	setLang: (lang: Lang) => void;
+	setLang: (lang: Lang) => Promise<void>;
 	t: (key: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextValue>({
 	lang: "en",
-	setLang: () => {},
+	setLang: async () => {},
 	t: (k) => k,
 });
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-	const [lang, setLangState] = useState<Lang>("en");
+function getBrowserCookieStore() {
+	return "cookieStore" in window ? window.cookieStore : null;
+}
+
+async function persistLang(lang: Lang) {
+	localStorage.setItem(LANGUAGE_COOKIE_NAME, lang);
+	const cookieStore = getBrowserCookieStore();
+	if (cookieStore) {
+		await cookieStore.set({
+			name: LANGUAGE_COOKIE_NAME,
+			value: lang,
+			path: "/",
+			expires: Date.now() + 31536000 * 1000,
+			sameSite: "lax",
+		});
+	} else {
+		// biome-ignore lint/suspicious/noDocumentCookie: fallback when Cookie Store API is unavailable.
+		document.cookie = `${LANGUAGE_COOKIE_NAME}=${lang}; path=/; max-age=31536000; samesite=lax`;
+	}
+	document.documentElement.lang = lang;
+}
+
+export function LanguageProvider({
+	children,
+	initialLang = "en",
+}: {
+	children: React.ReactNode;
+	initialLang?: Lang;
+}) {
+	const [lang, setLangState] = useState<Lang>(initialLang);
 
 	useEffect(() => {
-		const stored = localStorage.getItem("lang") as Lang | null;
-		if (stored === "en" || stored === "es") setLangState(stored);
-	}, []);
+		document.documentElement.lang = initialLang;
+		localStorage.setItem(LANGUAGE_COOKIE_NAME, initialLang);
+	}, [initialLang]);
 
-	const setLang = useCallback((l: Lang) => {
-		setLangState(l);
-		localStorage.setItem("lang", l);
+	const setLang = useCallback(async (l: Lang) => {
+		const nextLang = parseLang(l);
+		setLangState(nextLang);
+		await persistLang(nextLang);
 	}, []);
 
 	const t = useCallback(
 		(key: string) =>
-			resolve(translations[lang] as Record<string, unknown>, key),
+			resolveTranslation(translations[lang] as Record<string, unknown>, key),
 		[lang],
 	);
 

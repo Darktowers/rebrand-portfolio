@@ -9,13 +9,7 @@ import experienceData from "../../data/experience.json";
 import Dot from "../v2/Dot";
 import GlowCard from "../v2/GlowCard";
 import PageHeader from "../v2/PageHeader";
-
-function formatDate(dateStr: string | null, presentLabel: string): string {
-	if (!dateStr) return presentLabel;
-	const [year, month] = dateStr.split("-");
-	const date = new Date(Number(year), Number(month) - 1);
-	return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
+import { formatExperienceDate } from "./experienceDates";
 
 interface Role {
 	id: string;
@@ -174,12 +168,12 @@ export default function Experience() {
 																			{t(titleKey)}
 																		</p>
 																		<span className="v2-chip mb-3">
-																			{formatDate(
+																			{formatExperienceDate(
 																				role.start,
 																				t("experience.present"),
 																			)}{" "}
 																			-{" "}
-																			{formatDate(
+																			{formatExperienceDate(
 																				role.end,
 																				t("experience.present"),
 																			)}
