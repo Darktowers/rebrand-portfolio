@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import { ThemeProvider } from "next-themes";
 import Footer from "../components/layout/Footer";
 import Navbar from "../components/layout/Navbar";
+import { BackgroundProvider } from "../components/v2/BackgroundContext";
+import BackgroundScene from "../components/v2/backgrounds/BackgroundScene";
 import { LanguageProvider } from "../context/LanguageContext";
 import {
 	getMetadataForLang,
@@ -71,9 +73,13 @@ export default async function RootLayout({
 					disableTransitionOnChange
 				>
 					<LanguageProvider initialLang={initialLang}>
-						<Navbar />
-						<main className="relative z-10">{children}</main>
-						<Footer />
+						<BackgroundProvider>
+							<BackgroundScene />
+							<div className="v2-hud-grid" aria-hidden="true" />
+							<Navbar />
+							<main className="relative z-10">{children}</main>
+							<Footer />
+						</BackgroundProvider>
 					</LanguageProvider>
 				</ThemeProvider>
 			</body>
